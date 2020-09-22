@@ -19,7 +19,12 @@
       <b-button type="submit" variant="primary">Submit</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
-    <h1>{{ form.responseData }}</h1>
+    <ul>
+      <li v-for="opinion in form.responseData.items" v-bind:key="opinion['Opinion Unit']">
+        {{ opinion['Opinion Unit'] }} : {{ opinion.Classification }}
+      </li>
+    </ul>
+    <h1>{{ form.responseData.items }}</h1>
   </div>
 </template>
 
@@ -40,11 +45,13 @@ import axios from 'axios'
         this.form.url = ''
       },
 
-      reviewMine(payload) {
+      async reviewMine(payload) {
         const path = 'http://localhost:5000/review_mine'
-        axios.post(path, payload)
+        const response = await axios.post(path, payload)
           .then((response) => { this.form.responseData = response.data })
           .catch((error) => { console.log(error) })
+
+        return response
       },
 
       onSubmit(event) {
