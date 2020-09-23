@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 
 import Home from '../views/Home.vue'
 import ReviewMining from '../views/ReviewMining.vue'
-import TestAPI from '../views/TestAPI.vue'
 
 Vue.use(VueRouter)
 
@@ -16,11 +15,6 @@ const routes = [{
     path: '/review_mining',
     name: 'ReviewMining',
     component: ReviewMining
-  },
-  {
-    path: '/test_api',
-    name: 'TestAPI',
-    component: TestAPI
   }
 ]
 

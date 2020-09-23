@@ -20,11 +20,11 @@
       <b-button type="reset" variant="danger">Reset</b-button>
     </b-form>
     <ul>
-      <li v-for="opinion in form.responseData.items" v-bind:key="opinion['Opinion Unit']">
+      <li v-for="opinion in form.responseData" v-bind:key="opinion['Opinion Unit']">
         {{ opinion['Opinion Unit'] }} : {{ opinion.Classification }}
       </li>
     </ul>
-    <h1>{{ form.responseData.items }}</h1>
+    <h1>{{ form.responseData }}</h1>
   </div>
 </template>
 
@@ -45,11 +45,24 @@ import axios from 'axios'
         this.form.url = ''
       },
 
-      async reviewMine(payload) {
+      async classifiyOpinionUnits(opinionUnits) {
         const path = 'http://localhost:5000/review_mine'
-        const response = await axios.post(path, payload)
+        const response = await axios.post(path, opinionUnits)
           .then((response) => { this.form.responseData = response.data })
           .catch((error) => { console.log(error) })
+
+        return response
+      },
+
+      async retrieveOpinionUnits(payload) {
+        const path = `http://localhost:9080/crawl.json?spider_name=burdy_scraper&url=${payload.url}`
+        const response = await axios.get(path)
+          .then((response) => {
+            this.form.responseData = response.data.items
+          })
+          .catch((error) => { console.log(error) })
+
+        this.classifiyOpinionUnits(this.form.responseData)
 
         return response
       },
@@ -61,7 +74,7 @@ import axios from 'axios'
           url: this.form.url
         }
       this.initForm()
-      this.reviewMine(payload)
+      this.retrieveOpinionUnits(payload)
       },
 
       onReset(evt) {

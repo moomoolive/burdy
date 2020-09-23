@@ -18,11 +18,11 @@ class Amazon_review_spider(scrapy.Spider):
                     )
             for opinion_unit in opinion_units:
                 yield{
-                    'Opinion Unit' : opinion_unit,
-                    'Classification' : None
+                    'Opinion Unit' : opinion_unit
                 }
 
-        next_page = response.css('li.a-last a::attr(href)').get()
+        #Only for Data Labeling
+        #next_page = response.css('li.a-last a::attr(href)').get()
 
-        if next_page is not None:
-            yield response.follow(next_page, callback=self.parse)
+        #if next_page is not None:
+            #yield response.follow(next_page, callback=self.parse)

@@ -18,19 +18,16 @@ def review_mine():
     data = {'status': 'success'}
 
     if request.method == 'POST':
-        post_data = request.get_json()
-        url = post_data.get('url')
-        path = f"http://localhost:9080/crawl.json?spider_name=burdy_scraper&url={url}"
-        response = requests.get(path)
-        
-        # returns dict
-        data = response.json()
-        for item in data['items']:
-            #if item['Opinion Unit'] == '':
-               # data['items'].remove(item)
-                #continue
-            #item['Classification'] = model.predict(item['Opinion Unit'])
-            print(item['Opinion Unit'] + " : " )
+        data = request.get_json()
+        for opinion_unit in data:
+            if opinion_unit['Opinion Unit'] == '':
+                data.remove(opinion_unit)
+                continue
+            tensor = tf.constant([opinion_unit['Opinion Unit']], dtype=tf.string)
+            prediction = model.predict(tensor)[0][0]
+            if prediction < 0:
+                prediction *= -1
+            opinion_unit['Classification'] = str(prediction)
         
         return jsonify(data)
 
