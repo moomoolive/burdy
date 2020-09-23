@@ -1,5 +1,5 @@
 # SQL database
-site
+site.db
 
 # tensorflow model
 my_model/
