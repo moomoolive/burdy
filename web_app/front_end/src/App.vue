@@ -1,12 +1,21 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/review_mining">Let's Review Mine</router-link>
+      <Header />
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Header from './components/Header.vue'
+
+export default {
+  components: {
+    Header
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
@@ -22,7 +31,7 @@
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #D3D3D3;
 
     &.router-link-exact-active {
       color: #42b983;
