@@ -1,15 +1,16 @@
 <template>
   <div class="about">
-    <MiningUrl />
+    <miningUrl />
   </div>
 </template>
 
 <script>
-import MiningUrl from '../components/MiningUrl.vue'
+import miningUrl from '../components/miningUrl.vue'
 
 export default {
+  name: 'reviewMining',
   components: {
-    MiningUrl
+    miningUrl
   }
 }
 </script>

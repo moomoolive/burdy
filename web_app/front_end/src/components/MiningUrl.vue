@@ -33,6 +33,7 @@
 import axios from 'axios'
 
   export default {
+    name: 'miningUrl',
     data() {
       return {
         form: {
