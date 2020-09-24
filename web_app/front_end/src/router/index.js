@@ -1,32 +1,38 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from '../views/Home.vue'
-import ReviewMining from '../views/ReviewMining.vue'
+import home from '../views/home.vue'
+import reviewMining from '../views/reviewMining.vue'
+import signUp from '../views/signUp.vue'
+import profile from '../views/profile.vue'
 import login from '../views/login.vue'
-import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
 const routes = [{
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'home',
+    component: home
   },
   {
     path: '/review_mining',
-    name: 'ReviewMining',
-    component: ReviewMining
+    name: 'reviewMining',
+    component: reviewMining
+  },
+  {
+    path: '/sign_up',
+    name: 'signUp',
+    component: signUp
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: profile
   },
   {
     path: '/login',
     name: 'login',
     component: login
-  },
-  {
-    path: '/profile',
-    name: 'Profile',
-    component: Profile
   }
 ]
 

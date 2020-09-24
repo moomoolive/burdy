@@ -38,6 +38,9 @@
                             Sign Out
                         </b-dropdown-item>
                         <b-dropdown-item href="#">
+                            <router-link to="/sign_up">Sign Up</router-link>
+                        </b-dropdown-item>
+                        <b-dropdown-item href="#">
                             <router-link to="/login">Login</router-link>
                         </b-dropdown-item>
                     </div>

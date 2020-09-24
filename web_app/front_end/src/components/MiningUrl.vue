@@ -33,6 +33,7 @@
 import axios from 'axios'
 
   export default {
+    name: 'miningUrl',
     data() {
       return {
         form: {
@@ -76,12 +77,13 @@ import axios from 'axios'
         const payload = {
           url: this.form.url
         }
-      this.initForm()
+
       this.retrieveOpinionUnits(payload)
+      this.initForm()
       },
 
-      onReset(evt) {
-        evt.preventDefault()
+      onReset(event) {
+        event.preventDefault()
         this.form.url = ''
       }
     }
