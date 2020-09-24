@@ -40,6 +40,9 @@
                         <b-dropdown-item href="#">
                             <router-link to="/sign_up">Sign Up</router-link>
                         </b-dropdown-item>
+                        <b-dropdown-item href="#">
+                            <router-link to="/login">Login</router-link>
+                        </b-dropdown-item>
                     </div>
                 </b-nav-item-dropdown>
             </b-navbar-nav>

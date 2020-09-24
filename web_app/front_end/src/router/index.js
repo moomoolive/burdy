@@ -5,6 +5,7 @@ import home from '../views/home.vue'
 import reviewMining from '../views/reviewMining.vue'
 import signUp from '../views/signUp.vue'
 import profile from '../views/profile.vue'
+import login from '../views/login.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,11 @@ const routes = [{
     path: '/profile',
     name: 'profile',
     component: profile
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: login
   }
 ]
 
