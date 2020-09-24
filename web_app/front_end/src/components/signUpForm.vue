@@ -1,7 +1,7 @@
 <template>
   <div>
-    <b-container class="url input form">
-      <b-form v-on:submit="onSubmit" v-on:reset="onReset" v-on:submit.stop.prevent>
+    <b-container class="signup form">
+      <b-form v-on:submit="onSubmit" v-on:reset="onReset">
         <b-form-group
           id="input-group-1"
           label="Username: "
@@ -59,18 +59,18 @@
 
         <b-form-group id="input-group-4" label="Confirm Password:" label-for="input-4">
           <b-form-input
-            id="input-3"
+            id="input-4"
             v-model="form.confirmPassword"
-            v-bind:state="passwordValidation"
+            v-bind:state="confirmPassword"
             type="password"
             required
-            placeholder="Please don't make this 'password'"
+            placeholder="Don't mess up. No pressure!"
           ></b-form-input>
-          <b-form-invalid-feedback v-bind:state="passwordValidation">
+          <b-form-invalid-feedback v-bind:state="confirmPassword">
             This is not equal to your password.
           </b-form-invalid-feedback>
-          <b-form-valid-feedback v-bind="passwordValidation">
-            There are the same.
+          <b-form-valid-feedback v-bind="confirmPassword">
+            They are the same.
           </b-form-valid-feedback>
         </b-form-group>
 
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-// import axios from 'axios' => to be used in API POST
+import axios from 'axios'
 
   export default {
     name: 'signUpForm',
@@ -99,23 +99,37 @@
     },
     methods: {
       initForm() {
-        this.form.url = ''
+        this.form.username = ''
+        this.form.email = ''
+        this.form.password = ''
+        this.form.confirmPassword = ''
+      },
+
+      async signUpUser(payload) {
+        const path = 'http://localhost:5000/sign_up'
+        const response = await axios.post(path, payload)
+          .then((response) => { console.log(response) })
+          .catch((error) => { console.log(error) })
+
+        return response
       },
 
       onSubmit(event) {
         event.preventDefault()
 
-       /* const payload = {
-          url: this.form.url
-        } */
-      this.initForm()
+        const payload = this.form
+
+        this.signUpUser(payload)
+        this.initForm()
       },
 
-      onReset(evt) {
-        evt.preventDefault()
+      onReset(event) {
+        event.preventDefault()
+
         this.form.username = ''
         this.form.email = ''
         this.form.password = ''
+        this.form.confirmPassword = ''
       }
     },
     computed: {
