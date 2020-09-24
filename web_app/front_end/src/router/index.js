@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import home from '../views/home.vue'
 import reviewMining from '../views/reviewMining.vue'
-import login from '../views/login.vue'
+import signUp from '../views/signUp.vue'
 import profile from '../views/profile.vue'
 
 Vue.use(VueRouter)
@@ -19,9 +19,9 @@ const routes = [{
     component: reviewMining
   },
   {
-    path: '/login',
-    name: 'login',
-    component: login
+    path: '/sign_up',
+    name: 'signUp',
+    component: signUp
   },
   {
     path: '/profile',
