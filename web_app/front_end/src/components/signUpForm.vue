@@ -16,7 +16,15 @@
             placeholder="the_FLuFfy_panda"
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="usernameValidation">
-            Your username must be 1-20 characters long. So choose wisely...
+            <div v-if="!unique">
+              You need an original username. Be a little creative. We believe in you.
+            </div>
+            <div v-else-if="form.username.length > 20">
+              Your username is too long.
+            </div>
+            <div v-else-if="form.username.length < 1">
+              You can't have a blank username.
+            </div>
           </b-form-invalid-feedback>
           <b-form-valid-feedback v-bind="usernameValidation">
             Looking Good.
@@ -33,10 +41,18 @@
             placeholder="fluffypanda@..."
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="emailValidation">
-            Your email cannot be empty or longer than 120 characters.
+            <div v-if="form.email.length > 120">
+              Your email can't be longer than 120 characters.
+            </div>
+            <div v-else-if="form.email.length < 1">
+              C'mon, you must have an email.
+            </div>
+            <div v-else-if="!uniqueEmail">
+              Looks like this email is already in our database. Second account?
+            </div>
           </b-form-invalid-feedback>
           <b-form-valid-feedback v-bind="emailValidation">
-            This should be long enough - just make sure it's an email.
+            Yep! That looks like an email.
           </b-form-valid-feedback>
         </b-form-group>
 
@@ -47,10 +63,10 @@
             v-bind:state="passwordValidation"
             type="password"
             required
-            placeholder="Please don't make this 'password'"
+            placeholder="Please, please, don't make this 'password'. Please."
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="passwordValidation">
-            Your password should be 6-60 characters long.
+            Your password must be 6-60 characters long.
           </b-form-invalid-feedback>
           <b-form-valid-feedback v-bind="passwordValidation">
             You should be good to go.
@@ -77,7 +93,6 @@
         <b-button type="submit" variant="primary">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
-      <h1>{{ form }}</h1>
     </b-container>
   </div>
 </template>
@@ -94,7 +109,9 @@ import axios from 'axios'
           email: '',
           password: '',
           confirmPassword: ''
-        }
+        },
+        uniqueUsername: false,
+        uniqueEmail: false
       }
     },
     methods: {
@@ -130,15 +147,38 @@ import axios from 'axios'
         this.form.email = ''
         this.form.password = ''
         this.form.confirmPassword = ''
+      },
+
+      async checkUniqueness(dataType, toBeChecked, value) {
+        const path = 'http://localhost:5000/check_unique'
+        const payload = {
+          type: dataType,
+          data: toBeChecked
+        }
+        await axios.post(path, payload)
+          .then((response) => (
+            this.unique = response.data === 'true'
+          ))
+          .catch((error) => (console.log(error)))
       }
     },
     computed: {
       usernameValidation() {
-        return this.form.username.length > 0 && this.form.username.length < 21
+        this.checkUniqueness('username', this.form.username, this.uniqueUsername)
+        const condition1 = this.form.username.length > 0
+        const condition2 = this.form.username.length < 21
+        const condition3 = this.unique
+
+        return condition1 && condition2 && condition3
       },
 
       emailValidation() {
-        return this.form.email.length > 0 && this.form.email.length < 121
+        this.checkUniqueness('email', this.form.email, this.uniqueEmail)
+        const condition1 = this.form.email.length > 0
+        const condition2 = this.form.email.length < 121
+        const condition3 = this.uniqueEmail
+
+        return condition1 && condition2 && condition3
       },
 
       passwordValidation() {

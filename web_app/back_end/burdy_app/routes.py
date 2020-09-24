@@ -49,3 +49,20 @@ def sign_up():
 
     return 'Sign up'
 
+@app.route('/check_unique', methods=['GET', 'POST'])
+def check_uniqueness():
+    if request.method == 'POST':
+        data = request.get_json()
+        check_for = data.get('type')
+        value = data.get('data')
+        arguments = {check_for: value}
+        uniqueness_check = User.query.filter_by(**arguments).first()
+
+        response = None
+        if uniqueness_check is not None:
+            response = jsonify('false')
+        else:
+            response = jsonify('true')
+        return response
+        
+    return 'hello world'
