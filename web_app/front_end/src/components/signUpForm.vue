@@ -16,13 +16,13 @@
             placeholder="the_FLuFfy_panda"
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="usernameValidation">
-            <div v-if="!unique">
+            <div v-if="!uniqueUsername">
               You need an original username. Be a little creative. We believe in you.
             </div>
-            <div v-else-if="form.username.length > 20">
+            <div v-if="form.username.length > 20">
               Your username is too long.
             </div>
-            <div v-else-if="form.username.length < 1">
+            <div v-if="form.username.length < 1">
               You can't have a blank username.
             </div>
           </b-form-invalid-feedback>
@@ -110,8 +110,8 @@ import axios from 'axios'
           password: '',
           confirmPassword: ''
         },
-        uniqueUsername: false,
-        uniqueEmail: false
+        uniqueUsername: true,
+        uniqueEmail: true
       }
     },
     methods: {
@@ -149,31 +149,33 @@ import axios from 'axios'
         this.form.confirmPassword = ''
       },
 
-      async checkUniqueness(dataType, toBeChecked, value) {
+      async checkUniqueness(dataType, toBeChecked) {
         const path = 'http://localhost:5000/check_unique'
         const payload = {
           type: dataType,
           data: toBeChecked
         }
-        await axios.post(path, payload)
-          .then((response) => (
-            this.unique = response.data === 'true'
-          ))
-          .catch((error) => (console.log(error)))
+        const response = await axios.post(path, payload)
+
+        if (dataType === 'username') {
+          this.uniqueUsername = response.data === 'true'
+        } else {
+          this.uniqueEmail = response.data === 'true'
+        }
       }
     },
     computed: {
       usernameValidation() {
-        this.checkUniqueness('username', this.form.username, this.uniqueUsername)
+        this.checkUniqueness('username', this.form.username)
         const condition1 = this.form.username.length > 0
         const condition2 = this.form.username.length < 21
-        const condition3 = this.unique
+        const condition3 = this.uniqueUsername
 
         return condition1 && condition2 && condition3
       },
 
       emailValidation() {
-        this.checkUniqueness('email', this.form.email, this.uniqueEmail)
+        this.checkUniqueness('email', this.form.email)
         const condition1 = this.form.email.length > 0
         const condition2 = this.form.email.length < 121
         const condition3 = this.uniqueEmail

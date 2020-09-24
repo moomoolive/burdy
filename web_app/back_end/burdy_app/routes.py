@@ -60,9 +60,10 @@ def check_uniqueness():
 
         response = None
         if uniqueness_check is not None:
-            response = jsonify('false')
+            response = 'false'
         else:
-            response = jsonify('true')
-        return response
+            response = 'true'
+        print(response)
+        return jsonify(response)
         
     return 'hello world'
