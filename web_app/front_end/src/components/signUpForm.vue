@@ -14,7 +14,8 @@
             type="text"
             required
             placeholder="the_FLuFfy_panda"
-          ></b-form-input>
+            v-on:input="username => checkUniqueness('username', username, 'uniqueUsername')"
+          />
           <b-form-invalid-feedback v-bind:state="usernameValidation">
             <div v-if="!uniqueUsername">
               You need an original username. Be a little creative. We believe in you.
@@ -39,15 +40,16 @@
             type="email"
             required
             placeholder="fluffypanda@..."
+            v-on:input="email => checkUniqueness('email', this.form.email, 'uniqueEmail')"
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="emailValidation">
             <div v-if="form.email.length > 120">
               Your email can't be longer than 120 characters.
             </div>
-            <div v-else-if="form.email.length < 1">
+            <div v-if="form.email.length < 1">
               C'mon, you must have an email.
             </div>
-            <div v-else-if="!uniqueEmail">
+            <div v-if="!uniqueEmail">
               Looks like this email is already in our database. Second account?
             </div>
           </b-form-invalid-feedback>
@@ -149,24 +151,20 @@ import axios from 'axios'
         this.form.confirmPassword = ''
       },
 
-      async checkUniqueness(dataType, toBeChecked) {
+      async checkUniqueness(dataType, toBeChecked, value) {
         const path = 'http://localhost:5000/check_unique'
         const payload = {
           type: dataType,
           data: toBeChecked
         }
         const response = await axios.post(path, payload)
+        this[value] = response.data === 'unique'
 
-        if (dataType === 'username') {
-          this.uniqueUsername = response.data === 'true'
-        } else {
-          this.uniqueEmail = response.data === 'true'
-        }
+        return this[value]
       }
     },
     computed: {
       usernameValidation() {
-        this.checkUniqueness('username', this.form.username)
         const condition1 = this.form.username.length > 0
         const condition2 = this.form.username.length < 21
         const condition3 = this.uniqueUsername
@@ -175,7 +173,6 @@ import axios from 'axios'
       },
 
       emailValidation() {
-        this.checkUniqueness('email', this.form.email)
         const condition1 = this.form.email.length > 0
         const condition2 = this.form.email.length < 121
         const condition3 = this.uniqueEmail
