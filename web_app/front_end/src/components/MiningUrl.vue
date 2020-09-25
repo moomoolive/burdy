@@ -21,7 +21,7 @@
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
       <ul v-if="showResponses">
-        <li v-for="opinion in form.responseData" v-bind:key="opinion['Opinion Unit']">
+        <li v-for="opinion in responseData" v-bind:key="opinion['Opinion Unit']">
           {{ opinion['Opinion Unit'] }} : {{ opinion.Classification }}
         </li>
       </ul>
@@ -37,9 +37,9 @@ import axios from 'axios'
     data() {
       return {
         form: {
-          url: '',
-          responseData: 'Hello'
+          url: ''
         },
+        responseData: 'Hello',
         showResponses: null
       }
     },
@@ -48,38 +48,23 @@ import axios from 'axios'
         this.form.url = ''
       },
 
-      async classifiyOpinionUnits(opinionUnits) {
+      async mineUrl(payload) {
         const path = 'http://localhost:5000/review_mine'
-        const response = await axios.post(path, opinionUnits)
-          .then((response) => { this.form.responseData = response.data })
-          .catch((error) => { console.log(error) })
-
-        return response
-      },
-
-      async retrieveOpinionUnits(payload) {
-        const path = `http://localhost:9080/crawl.json?spider_name=burdy_scraper&url=${payload.url}`
-        const response = await axios.get(path)
+        await axios.post(path, payload)
           .then((response) => {
-            this.form.responseData = response.data.items
+            this.responseData = response.data
+            this.showResponses = true
           })
           .catch((error) => { console.log(error) })
-
-        this.classifiyOpinionUnits(this.form.responseData)
-        this.showResponses = true
-
-        return response
       },
 
       onSubmit(event) {
         event.preventDefault()
 
-        const payload = {
-          url: this.form.url
-        }
+        const payload = { url: this.form.url }
 
-      this.retrieveOpinionUnits(payload)
-      this.initForm()
+        this.mineUrl(payload)
+        this.initForm()
       },
 
       onReset(event) {

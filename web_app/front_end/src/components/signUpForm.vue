@@ -126,11 +126,9 @@ import axios from 'axios'
 
       async signUpUser(payload) {
         const path = 'http://localhost:5000/sign_up'
-        const response = await axios.post(path, payload)
+        await axios.post(path, payload)
           .then((response) => { console.log(response) })
           .catch((error) => { console.log(error) })
-
-        return response
       },
 
       onSubmit(event) {

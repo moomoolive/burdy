@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">
+            <b-navbar-brand href="http://localhost:8080/">
                 <i class="fas fa-dove main"></i>
                 Burdy
             </b-navbar-brand>
@@ -31,16 +31,16 @@
                     <em>User</em>
                 </template>
                     <div>
-                        <b-dropdown-item href="#">
+                        <b-dropdown-item>
                             <router-link to="/profile">Profile</router-link>
                         </b-dropdown-item>
-                        <b-dropdown-item href="#">
+                        <b-dropdown-item>
                             Sign Out
                         </b-dropdown-item>
-                        <b-dropdown-item href="#">
+                        <b-dropdown-item>
                             <router-link to="/sign_up">Sign Up</router-link>
                         </b-dropdown-item>
-                        <b-dropdown-item href="#">
+                        <b-dropdown-item>
                             <router-link to="/login">Login</router-link>
                         </b-dropdown-item>
                     </div>

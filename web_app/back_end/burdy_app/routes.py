@@ -15,7 +15,12 @@ def review_mine():
     data = {'status': 'success'}
 
     if request.method == 'POST':
-        data = request.get_json()
+        path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
+
+        url_data = request.get_json()
+        url = url_data.get('url')
+        scrapy_request = requests.get(path + url)
+        data = scrapy_request.json()['items']
         for opinion_unit in data:
             if opinion_unit['Opinion Unit'] == '':
                 data.remove(opinion_unit)
@@ -63,7 +68,6 @@ def check_uniqueness():
             response = 'not unique'
         else:
             response = 'unique'
-        print(response)
         return jsonify(response)
         
     return 'hello world'
