@@ -35,7 +35,7 @@ def review_mine():
 
     return jsonify(data)
 
-@app.route('/sign_up', methods=['GET','POST'])
+@app.route('/sign_up', methods=['POST'])
 def sign_up():
     if request.method == 'POST':
         data = request.get_json()
@@ -50,11 +50,11 @@ def sign_up():
         database.session.add(user)
         database.session.commit()
 
-        return jsonify(username, email, password)
+        return jsonify(f'Successfully signed up {username} to Burdy!')
 
     return 'Sign up'
 
-@app.route('/check_unique', methods=['GET', 'POST'])
+@app.route('/check_unique', methods=['POST'])
 def check_uniqueness():
     if request.method == 'POST':
         data = request.get_json()
@@ -70,4 +70,4 @@ def check_uniqueness():
             response = 'unique'
         return jsonify(response)
         
-    return 'hello world'
+    return 'Check Uniqueness'
