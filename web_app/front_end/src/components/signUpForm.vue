@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="inputGeneral">
     <b-container class="signup form">
       <b-form v-on:submit="onSubmit" v-on:reset="onReset">
         <b-form-group
@@ -13,7 +13,7 @@
             v-bind:state="usernameValidation"
             type="text"
             required
-            placeholder="the_FLuFfy_panda"
+            placeholder="da_FLuFfy_burdy"
             v-on:input="username => checkUniqueness('username', username, 'uniqueUsername')"
           />
           <b-form-invalid-feedback v-bind:state="usernameValidation">
@@ -39,7 +39,7 @@
             v-bind:state='emailValidation'
             type="email"
             required
-            placeholder="fluffypanda@..."
+            placeholder="beautifulburdy@burdyparadise.com"
             v-on:input="email => checkUniqueness('email', this.form.email, 'uniqueEmail')"
           ></b-form-input>
           <b-form-invalid-feedback v-bind:state="emailValidation">
@@ -191,5 +191,8 @@ import axios from 'axios'
 </script>
 
 <style scoped>
+.inputGeneral {
+  margin-top: 5em;
+}
 
 </style>
