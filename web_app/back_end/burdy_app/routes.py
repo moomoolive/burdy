@@ -3,8 +3,13 @@ from flask import flash, jsonify, request, json, render_template
 import requests
 import tensorflow as tf
 from burdy_app.models import User
+import jwt
+import json
+import datetime
 
 model = tf.keras.models.load_model('my_model')
+with open('security_configurations.json') as f:
+    JWT_SECRET = json.load(f)['jwt secret']
 
 @app.route('/', methods=['GET'])
 def home():
@@ -44,8 +49,6 @@ def sign_up():
         password = data.get('password')
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        print(username, email, password, hashed_password)
-
         user = User(username=username, email=email, password=hashed_password)
         database.session.add(user)
         database.session.commit()
@@ -71,3 +74,25 @@ def check_uniqueness():
         return jsonify(response)
         
     return 'Check Uniqueness'
+
+@app.route('/authenticate', methods=['POST'])
+def authenticate():
+    if request.method == 'POST':
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        user = User.query.filter_by(username=username).first()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            jwt_token = jwt.encode({
+                'sub': username,
+                'iat': datetime.datetime.utcnow(),
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+                }, 
+                JWT_SECRET
+                )
+            return jsonify(str(jwt_token))  
+        else:
+            return jsonify('Invalid username or password')
+
+    return 'authenticate'

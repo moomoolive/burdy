@@ -1,3 +1,4 @@
 export default {
-    reviewMinedData: ''
+    reviewMinedData: '',
+    currentJWT: ''
 }
