@@ -1,16 +1,21 @@
 import state from './state.js'
-import axios from 'axios'
-import store from '../store/index.js'
 
 export default {
     isLoggedIn: (state) => (!!state.currentJWT),
-    // should split into two getters
-    isJWTExpired: (state) => {
-        const token = store.state.currentJWT
-        if (!token || token.split('.').length < 3) {
-            return true
-        }
-        const tokenInfo = atob(token.split('.')[1])
+
+    decodedJWT: (state) => {
+        const token = state.currentJWT
+        const tokenInfoSection = token.split('.')[1]
+        const decodedTokenInfo = atob(tokenInfoSection)
+        const jsonTokenInfo = JSON.parse(decodedTokenInfo)
+
+        return jsonTokenInfo
+    },
+
+    userInfo: (state, getters) => (getters.decodedJWT.sub),
+
+    isJWTValid: (state, getters) => {
+        const tokenInfo = getters.decodedJWT
         const expirationTime = new Date(tokenInfo.exp * 1000)
         const timeNow = new Date()
 

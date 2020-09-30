@@ -6,6 +6,8 @@ from burdy_app.models import User
 import jwt
 import json
 import datetime
+#do this later
+#from burdy_app.utils import token_required
 
 model = tf.keras.models.load_model('my_model')
 with open('security_configurations.json') as f:
@@ -17,11 +19,21 @@ def home():
 
 @app.route('/review_mine', methods=['POST'])
 def review_mine():
+    # make this into decorator function later
     try:
+        authorization_headers = request.headers.get('Authorization').split()
+        token = authorization_headers[1]
+        print(type(authorization_headers), type(token))
+        print(token)
+        data = jwt.decode(token, JWT_SECRET, algorithms='HS256') # invalid heading padding? Decoding?
         url_data = request.get_json() #make a function to check this
         url = url_data.get('url')
+    except (jwt.InvalidTokenError, Exception) as e:
+            print(e)
+            return jsonify("You aren't authorized to use this resource"), 401
     except:
         return jsonify('Missing Required Data'), 400
+    # end here
 
     path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
     scrapy_request = requests.get(path + url)
@@ -96,19 +108,3 @@ def login():
         return jsonify(str(jwt_token))  
     else:
         return jsonify('Invalid username or password'), 401
-
-@app.route('/authenticate', methods=['POST'])
-def authenticate():
-    try:
-        data = request.get_json()
-        token = data.get('token')
-    except:
-        return jsonify('Missing Required Data'), 400
-    print(type(token))
-
-    try:
-        jwt.decode(token, JWT_SECRET, algorithms=["HS256"])
-
-        return jsonify('Valid token')
-    except jwt.InvalidTokenError:
-        return jsonify('This token is invalid'), 403

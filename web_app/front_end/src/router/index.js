@@ -48,11 +48,18 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requireAuthorization)) {
-    if (store.getters.isLoggedIn) {
-      next()
+    if (!store.getters.isLoggedIn) {
+      next('/login')
+      alert('Please login to view this page')
       return
     }
-    next('/login')
+    if (!store.getters.isJWTValid) {
+      next('/login')
+      alert('Your login has expired. Please sign-in again')
+      store.dispatch('logout')
+      return
+    }
+    next()
   } else {
     next()
   }

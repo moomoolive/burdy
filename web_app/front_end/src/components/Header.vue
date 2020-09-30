@@ -60,9 +60,6 @@
 <script>
 export default {
     name: 'Header',
-    computed: {
-        isLoggedIn: function() { return this.$store.getters.isLoggedIn }
-    },
     methods: {
         logout: function() {
             this.$store.dispatch('logout')
@@ -70,6 +67,9 @@ export default {
                     this.$router.push('/login')
                 })
         }
+    },
+    computed: {
+        isLoggedIn: function() { return this.$store.getters.isLoggedIn }
     }
 }
 </script>

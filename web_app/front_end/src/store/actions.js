@@ -1,9 +1,11 @@
 import axios from 'axios'
 
+import store from './index.js'
+
 export default {
     async mineUrl({ commit }, url) {
         const path = 'http://localhost:5000/review_mine'
-        await axios.post(path, url)
+        await axios.post(path, url, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
           .then((response) => { commit('setData', response.data) })
           .catch((error) => { console.log('Failed to fetch Url', error) })
     },
