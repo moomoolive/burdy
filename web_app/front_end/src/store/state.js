@@ -1,4 +1,6 @@
 export default {
     reviewMinedData: '',
-    currentJWT: ''
+    currentJWT: localStorage.getItem('token') || '',
+    user: '',
+    loginStatus: ''
 }

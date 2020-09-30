@@ -4,13 +4,35 @@ export default {
     async mineUrl({ commit }, url) {
         const path = 'http://localhost:5000/review_mine'
         await axios.post(path, url)
-          .then((response) => {commit('setData', response.data)})
-          .catch((error) => {console.log('Failed to fetch Url', error)})
+          .then((response) => { commit('setData', response.data) })
+          .catch((error) => { console.log('Failed to fetch Url', error) })
     },
-    async fetchJWT({ commit }, payload) {
-      const path = 'http://localhost:5000/authenticate'
-      await axios.post(path, payload)
-        .then((response) => {commit('setJWT', response.data)})
-        .catch((error) => {console.log('Error Authenticating', error)})
+
+    fetchJWT({ commit }, payload) {
+      return new Promise((resolve, reject) => {
+        const path = 'http://localhost:5000/login'
+        axios.post(path, payload)
+          .then((response) => {
+            const token = response.data
+            localStorage.setItem('token', token)
+            axios.defaults.headers.common.Authorization = token
+            commit('authorizationSuccess', token)
+            resolve(response)
+      })
+        .catch((error) => {
+          commit('authorizationError', error)
+          localStorage.removeItem('token')
+          reject(error)
+        })
+      })
+    },
+
+    logout({ commit }) {
+      return new Promise((resolve, reject) => {
+        commit('logout')
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common.Authorization
+        resolve()
+      })
     }
 }

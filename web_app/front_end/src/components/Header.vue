@@ -31,18 +31,24 @@
                     <em>User</em>
                 </template>
                     <div>
-                        <b-dropdown-item>
-                            <router-link to="/profile">Profile</router-link>
-                        </b-dropdown-item>
-                        <b-dropdown-item>
-                            Sign Out
-                        </b-dropdown-item>
-                        <b-dropdown-item>
-                            <router-link to="/sign_up">Sign Up</router-link>
-                        </b-dropdown-item>
-                        <b-dropdown-item>
-                            <router-link to="/login">Login</router-link>
-                        </b-dropdown-item>
+                        <div v-if="isLoggedIn">
+                            <b-dropdown-item>
+                                <router-link to="/profile">Profile</router-link>
+                            </b-dropdown-item>
+                            <b-dropdown-item
+                            v-on:click='logout'
+                            >
+                                Sign Out
+                            </b-dropdown-item>
+                        </div>
+                            <div v-if="!isLoggedIn">
+                            <b-dropdown-item>
+                                <router-link to="/sign_up">Sign Up</router-link>
+                            </b-dropdown-item>
+                            <b-dropdown-item>
+                                <router-link to="/login">Login</router-link>
+                            </b-dropdown-item>
+                        </div>
                     </div>
                 </b-nav-item-dropdown>
             </b-navbar-nav>
@@ -53,7 +59,18 @@
 
 <script>
 export default {
-    name: 'Header'
+    name: 'Header',
+    computed: {
+        isLoggedIn: function() { return this.$store.getters.isLoggedIn }
+    },
+    methods: {
+        logout: function() {
+            this.$store.dispatch('logout')
+                .then(() => {
+                    this.$router.push('/login')
+                })
+        }
+    }
 }
 </script>
 

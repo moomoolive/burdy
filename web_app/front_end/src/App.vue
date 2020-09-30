@@ -10,9 +10,16 @@
 <script>
 import Header from './components/Header.vue'
 
+import axios from 'axios'
+
 export default {
   components: {
     Header
+  },
+  created: function() {
+    if (this.$store.getters.isJWTExpired) {
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>

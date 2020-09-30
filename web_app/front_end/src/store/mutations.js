@@ -1,7 +1,19 @@
 export default {
-    setData: (state, reviewMineData) => { state.reviewMinedData = reviewMineData },
-    setJWT: (state, jwt) => { 
-        state.currentJWT = jwt 
-        localStorage.token = jwt
+    setData: (state, reviewMineData) => {
+        state.reviewMinedData = reviewMineData
+    },
+
+    authorizationSuccess: (state, token) => {
+        state.loginStatus = 'success'
+        state.currentJWT = token
+    },
+
+    authorizationError: (state) => {
+        state.loginStatus = 'error'
+    },
+
+    logout: (state) => {
+        state.loginStatus = ''
+        state.currentJWT = ''
     }
 }
