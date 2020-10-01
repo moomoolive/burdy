@@ -7,16 +7,17 @@
 [![forthebadge](https://forthebadge.com/images/badges/open-source.svg)](https://github.com/moomoolive/burdy)
 [![forthebadge](https://forthebadge.com/images/badges/check-it-out.svg)](https://github.com/moomoolive/burdy)
 # Burdy
-Voice of Customer Software
+Voice of customer software ==> is a little burdy to tell you what your customers are saying; without you moving an inch.
 
-This is a git repository for all things related to the Burdy.
+This is a web-based application, using Vue(Javascript) in the front-end and Flask(Python) in the back-end.
+
+In a nutshell, burdy goes to amazon.ca to find interesting 'copy-worthy' statements from amazon reviews. It uses a scraper to gather the reviews, then performs sentimental analysis on the reviews.
+
+Sentimental analysis is done with a custom-made Tensorflow machine learning Algorithm. The weights and data of the model are too big to upload to Github tho.
+
+Feel free to use any of the code at your own liking - hope it helps you out.
 
 The 'Enviroment' folder is a folder that contains the virtual enviroment you will need to develop the script. I used virtualenv to create it.
-
-Idea_testing_code is a folder where I try any relevant ideas to the software, like libraries, make prototypes for main program script.
-
-The main_program_loop is as clear as day - it's the actual script that will be used in the back-end insha'Allah. DO NOT ADD TO THE SCRIPT THERE UNLESS YOU'RE COMPLETELY SURE IT WILL BE IN THE PROGRAM. 
-
 
 ## Structure
 
