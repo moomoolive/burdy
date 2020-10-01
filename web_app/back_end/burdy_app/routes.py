@@ -6,8 +6,7 @@ from burdy_app.models import User
 import jwt
 import json
 import datetime
-#do this later
-#from burdy_app.utils import token_required
+from burdy_app.utils import token_required, data_check
 
 model = tf.keras.models.load_model('my_model')
 with open('security_configurations.json') as f:
@@ -18,25 +17,21 @@ def home():
     return render_template('home_page.html')
 
 @app.route('/review_mine', methods=['POST'])
+@token_required
 def review_mine():
-    # make this into decorator function later
     try:
-        authorization_headers = request.headers.get('Authorization').split()
-        token = authorization_headers[1]
-        print(type(authorization_headers), type(token))
-        print(token)
-        data = jwt.decode(token, JWT_SECRET, algorithms='HS256') # invalid heading padding? Decoding?
-        url_data = request.get_json() #make a function to check this
+        url_data = request.get_json()
         url = url_data.get('url')
-    except (jwt.InvalidTokenError, Exception) as e:
-            print(e)
-            return jsonify("You aren't authorized to use this resource"), 401
     except:
         return jsonify('Missing Required Data'), 400
-    # end here
 
-    path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
-    scrapy_request = requests.get(path + url)
+    try:
+        path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
+        scrapy_request = requests.get(path + url)
+    except requests.Timeout:
+        return jsonify('Scrapy service is probably not active, check back later'), 408
+    except Exception:
+        return jsonify('Scrapy service error'), 500
     data = scrapy_request.json()['items']
 
     for opinion_unit in data:
@@ -101,10 +96,11 @@ def login():
         jwt_token = jwt.encode({
             'sub': username,
             'iat': datetime.datetime.utcnow(),
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)
             }, 
             JWT_SECRET
             )
-        return jsonify(str(jwt_token))  
+        decoded_token = jwt_token.decode('ASCII')
+        return jsonify(decoded_token)  
     else:
         return jsonify('Invalid username or password'), 401
