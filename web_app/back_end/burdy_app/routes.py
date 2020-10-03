@@ -6,7 +6,7 @@ from burdy_app.models import User
 import jwt
 import json
 import datetime
-from burdy_app.utils import token_required, data_check
+from burdy_app.utils import token_required
 
 model = tf.keras.models.load_model('my_model')
 with open('security_configurations.json') as f:

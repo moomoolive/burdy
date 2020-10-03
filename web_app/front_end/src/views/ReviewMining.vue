@@ -30,8 +30,8 @@ export default {
   },
   data() {
     return {
-      showInputForm: true,
-      loading: false,
+      showInputForm: false,
+      loading: true,
       dataRecieved: false
     }
   },

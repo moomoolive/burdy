@@ -28,7 +28,10 @@
                 <b-nav-item-dropdown right>
                 <!-- Using 'button-content' slot -->
                 <template v-slot:button-content>
-                    <em>User</em>
+                    <em class="userInfo">
+                        <small v-if="isLoggedIn">Welcome, {{username}}</small>
+                        <small v-else>User</small>
+                    </em>
                 </template>
                     <div>
                         <div v-if="isLoggedIn">
@@ -69,7 +72,11 @@ export default {
         }
     },
     computed: {
-        isLoggedIn: function() { return this.$store.getters.isLoggedIn }
+        isLoggedIn() { return this.$store.getters.isLoggedIn },
+
+        username() {
+            return this.$store.getters.userInfo
+            }
     }
 }
 </script>
@@ -77,6 +84,11 @@ export default {
 <style scoped>
 .main {
     color: #42b983;
+}
+
+.userInfo {
+    color: white;
+    margin-top: 0.5em;
 }
 
 </style>

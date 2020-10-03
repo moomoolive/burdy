@@ -70,7 +70,15 @@ import { mapActions } from 'vuex'
         this.initForm()
       }
     },
+    watch: {
+      login() {
+        if (this.login === 'success') this.$router.push('/')
+      }
+    },
     computed: {
+      login() {
+        return this.$store.state.loginStatus
+      }
     }
   }
 
