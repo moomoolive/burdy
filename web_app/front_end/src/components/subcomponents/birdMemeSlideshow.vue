@@ -17,7 +17,7 @@
     created: function() {
         window.setInterval(() => {
             this.changeImage()
-            }, 3000)
+            }, 5000)
     },
     methods: {
         changeImage() {
@@ -26,11 +26,7 @@
     },
     computed: {
         image() {
-            return require(`../assets/birdMemes/${this.imageNum}.jpg`)
-        },
-        imageFolder() {
-            const fs = require('fs')
-            return fs.readdir('../assets/birdMemes')
+            return require(`../../assets/birdMemes/${this.imageNum}.jpg`)
         }
     }
   }

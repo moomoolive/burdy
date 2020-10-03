@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import birdMemeSlideshow from './birdMemeSlideshow.vue'
+import birdMemeSlideshow from './subcomponents/birdMemeSlideshow.vue'
 
 export default {
     name: 'loadingScreen',

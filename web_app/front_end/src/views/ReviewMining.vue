@@ -19,8 +19,6 @@ import miningUrl from '../components/miningUrl.vue'
 import loadingScreen from '../components/loadingScreen.vue'
 import minedData from '../components/minedData.vue'
 
-import { mapState } from 'vuex'
-
 export default {
   name: 'reviewMining',
   components: {
@@ -30,8 +28,8 @@ export default {
   },
   data() {
     return {
-      showInputForm: false,
-      loading: true,
+      showInputForm: true,
+      loading: false,
       dataRecieved: false
     }
   },
@@ -43,7 +41,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(['reviewMinedData'])
+    reviewMinedData() {
+      return this.$store.state.reviewMinedData
+    }
   },
   watch: {
     reviewMinedData(value) {
