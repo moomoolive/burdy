@@ -7,6 +7,7 @@ import jwt
 import json
 import datetime
 from burdy_app.utils import token_required
+import random
 
 model = tf.keras.models.load_model('my_model')
 with open('security_configurations.json') as f:
@@ -34,17 +35,23 @@ def review_mine():
         return jsonify('Scrapy service error'), 500
     data = scrapy_request.json()['items']
 
+    return_dict = {
+        0: [],
+        1: [],
+        2: [],
+        3: []
+    }
     for opinion_unit in data:
         if opinion_unit['Opinion Unit'] == '':
             data.remove(opinion_unit)
             continue
         tensor = tf.constant([opinion_unit['Opinion Unit']], dtype=tf.string)
-        prediction = model.predict(tensor)[0][0]
-        if prediction < 0:
+        prediction = round(model.predict(tensor)[0][0] + (random.random() * 3))
+        if prediction <= 0:
             prediction *= -1
-        opinion_unit['Classification'] = str(prediction)
+        return_dict[prediction].append(opinion_unit['Opinion Unit'])
     
-    return jsonify(data)
+    return jsonify(return_dict)
 
 @app.route('/sign_up', methods=['POST'])
 def sign_up():
