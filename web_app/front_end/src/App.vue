@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <Header />
+      <Footer />
     </div>
     <router-view/>
   </div>
@@ -9,12 +10,14 @@
 
 <script>
 import Header from './components/Header.vue'
+import Footer from './components/Footer.vue'
 
 import axios from 'axios'
 
 export default {
   components: {
-    Header
+    Header,
+    Footer
   },
   created: function() {
     if (this.$store.getters.isJWTExpired) {

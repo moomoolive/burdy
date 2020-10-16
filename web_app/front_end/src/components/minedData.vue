@@ -11,9 +11,21 @@
             </div>
         </div>
         <ul>
-            <li v-for="opinion in currentlyShownClass" v-bind:key="opinion">
-                {{ opinion }}
-            </li>
+            <div class='data_container'>
+                <h1 class='headers'>
+                    {{ classNames[shownClass] }}
+                </h1>
+                <h3 class="headers">
+                    {{ classInstances }} instances found
+                </h3>
+                    <p
+                    class="sentences"
+                    v-for="opinion in currentlyShownClass"
+                    v-bind:key="opinion"
+                    >
+                        {{ opinion }}
+                    </p>
+            </div>
         </ul>
     </div>
 </template>
@@ -23,7 +35,13 @@ export default {
     name: 'minedData',
     data() {
         return {
-            shownClass: 1
+            shownClass: 1,
+            classNames: {
+                0: 'Irrelevant',
+                1: 'Use Cases',
+                2: 'Benefits',
+                3: 'Complaints'
+            }
         }
     },
     methods: {
@@ -37,6 +55,9 @@ export default {
         },
         currentlyShownClass() {
             return this.reviewMinedData[this.shownClass]
+        },
+        classInstances() {
+            return this.currentlyShownClass.length
         }
     }
 }
@@ -44,6 +65,24 @@ export default {
 
 <style scoped>
 .buttons {
-    margin-bottom: 1em;
+    margin-bottom: 2em;
+    margin-top: 2em;
+}
+
+.data_container {
+    border-style: groove;
+    text-align: left;
+    margin-left: 3em;
+    margin-right: 3em;
+}
+
+.sentences {
+    font-size: medium;
+    margin: 0.25em;
+}
+
+.headers {
+    text-align: center;
+    border-bottom: groove;
 }
 </style>

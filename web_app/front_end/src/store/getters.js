@@ -12,7 +12,12 @@ export default {
         return jsonTokenInfo
     },
 
-    userInfo: (state, getters) => (getters.decodedJWT.sub),
+    userInfo: (state, getters) => (
+        {
+            username: getters.decodedJWT.user,
+            email: getters.decodedJWT.email
+        }
+        ),
 
     isJWTValid: (state, getters) => {
         const tokenInfo = getters.decodedJWT

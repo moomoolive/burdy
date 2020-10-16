@@ -101,7 +101,8 @@ def login():
 
     if user and bcrypt.check_password_hash(user.password, password):
         jwt_token = jwt.encode({
-            'sub': username,
+            'user': user.username,
+            'email': user.email,
             'iat': datetime.datetime.utcnow(),
             'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)
             }, 

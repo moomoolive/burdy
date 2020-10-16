@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar toggleable="lg" type="dark" variant="dark">
+        <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
             <b-navbar-brand href="http://localhost:8080/">
                 <i class="fas fa-dove main"></i>
                 Burdy
@@ -20,11 +20,6 @@
 
             <!-- Right aligned nav items -->
             <b-navbar-nav class="ml-auto">
-                <b-nav-form>
-                    <b-form-input size="sm" class="mr-sm-2" placeholder="I want to find..."></b-form-input>
-                    <b-button size="sm" class="my-2 my-sm-0" type="submit">Search</b-button>
-                </b-nav-form>
-
                 <b-nav-item-dropdown right>
                 <!-- Using 'button-content' slot -->
                 <template v-slot:button-content>
@@ -36,7 +31,7 @@
                     <div>
                         <div v-if="isLoggedIn">
                             <b-dropdown-item>
-                                <router-link to="/profile">Profile</router-link>
+                                <router-link to="/profile">Profile Settings</router-link>
                             </b-dropdown-item>
                             <b-dropdown-item
                             v-on:click='logout'
@@ -75,7 +70,7 @@ export default {
         isLoggedIn() { return this.$store.getters.isLoggedIn },
 
         username() {
-            return this.$store.getters.userInfo
+            return this.$store.getters.userInfo.username
             }
     }
 }
@@ -83,7 +78,7 @@ export default {
 
 <style scoped>
 .main {
-    color: #42b983;
+    color: #42b983 !important;
 }
 
 .userInfo {
