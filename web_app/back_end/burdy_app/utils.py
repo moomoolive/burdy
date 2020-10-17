@@ -2,11 +2,13 @@ from flask import request, jsonify, request
 import jwt
 from burdy_app.models import User
 import json
+from functools import wraps
 
 with open('security_configurations.json') as f:
     JWT_SECRET = json.load(f)['jwt secret']
 
 def token_required(function):
+    @wraps(function)
     def _verify(*args, **kwargs):
         authorization_headers = request.headers.get('Authorization').split()
 
@@ -17,7 +19,7 @@ def token_required(function):
             token = authorization_headers[1]
             encoded_token = token.encode('ASCII')
             data = jwt.decode(encoded_token, JWT_SECRET, algorithms=['HS256'])
-            user = User.query.filter_by(username=data['sub']).first()
+            user = User.query.filter_by(username=data['user']).first()
             if not user:
                 raise RuntimeError('User not found')
             return function(*args, **kwargs)

@@ -112,3 +112,29 @@ def login():
         return jsonify(decoded_token)  
     else:
         return jsonify('Invalid username or password'), 401
+
+@app.route('/update_info', methods=['POST'])
+@token_required
+def update_info():
+    try:
+        data = request.get_json()
+        original_username = data.get('originalUsername')
+        new_username = data.get('username')
+        new_email = data.get('email')
+        print(original_username)
+    except:
+        return jsonify('Missing Required Data'), 400
+
+    user = User.query.filter_by(username=original_username).first()
+
+    if user:
+        user.username = new_username
+        user.email = new_email
+        database.session.commit()
+        # send new JWT with updated credentials
+        return jsonify('Successfully updated profile')
+    else:
+        return jsonify('Profile was not updated!'), 400
+
+
+    
