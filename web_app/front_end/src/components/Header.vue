@@ -76,9 +76,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .main {
-    color: #42b983 !important;
+    color: $mainGreen;
 }
 
 .userInfo {
