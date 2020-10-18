@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import miningUrl from '../components/miningUrl.vue'
-import loadingScreen from '../components/loadingScreen.vue'
+import miningUrl from '../components/forms/miningUrl.vue'
+import loadingScreen from '../components/transitionScreens/loadingScreen.vue'
 import minedData from '../components/minedData.vue'
 
 export default {
@@ -57,7 +57,17 @@ export default {
         this.dataRecieved = false
       }
     }
-  }
+  },
+  beforeRouteLeave (to, from, next) {
+        if (this.reviewMinedData && this.dataRecieved) {
+            const answer = window.confirm('Do you really want to leave? This data will be erased!')
+            if (answer) {
+                next()
+            } else {
+                next(false)
+            }
+        }
+    }
 }
 </script>
 

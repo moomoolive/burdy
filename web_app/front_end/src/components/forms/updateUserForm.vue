@@ -1,5 +1,6 @@
 <template>
   <div class="inputGeneral">
+    <h1> Update Profile </h1>
     <b-container class="signup form">
       <b-form v-on:submit="onSubmit" v-on:reset="onReset">
         <b-form-group
@@ -27,7 +28,7 @@
               You can't have a blank username.
             </div>
           </b-form-invalid-feedback>
-          <b-form-valid-feedback v-bind="usernameValidation">
+          <b-form-valid-feedback v-bind:state="usernameValidation">
             Looking Good.
           </b-form-valid-feedback>
         </b-form-group>
@@ -53,46 +54,14 @@
               Looks like this email is already in our database. Second account?
             </div>
           </b-form-invalid-feedback>
-          <b-form-valid-feedback v-bind="emailValidation">
+          <b-form-valid-feedback v-bind:state="emailValidation">
             Yep! That looks like an email.
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-          <b-form-input
-            id="input-3"
-            v-model="form.password"
-            v-bind:state="passwordValidation"
-            type="password"
-            required
-            placeholder="Please, please, don't make this 'password'. Please."
-          ></b-form-input>
-          <b-form-invalid-feedback v-bind:state="passwordValidation">
-            Your password must be 6-60 characters long.
-          </b-form-invalid-feedback>
-          <b-form-valid-feedback v-bind="passwordValidation">
-            You should be good to go.
-          </b-form-valid-feedback>
-        </b-form-group>
-
-        <b-form-group id="input-group-4" label="Confirm Password:" label-for="input-4">
-          <b-form-input
-            id="input-4"
-            v-model="form.confirmPassword"
-            v-bind:state="confirmPassword"
-            type="password"
-            required
-            placeholder="Don't mess up. No pressure!"
-          ></b-form-input>
-          <b-form-invalid-feedback v-bind:state="confirmPassword">
-            This is not equal to your password.
-          </b-form-invalid-feedback>
-          <b-form-valid-feedback v-bind="confirmPassword">
-            They are the same.
-          </b-form-valid-feedback>
-        </b-form-group>
-
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <div v-if="!unchangedUserInfo">
+          <b-button type="submit" variant="success">Confirm Changes</b-button>
+        </div>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-container>
@@ -101,16 +70,15 @@
 
 <script>
 import axios from 'axios'
+import store from '../../store/index.js'
 
   export default {
-    name: 'signUpForm',
+    name: 'updateUserForm',
     data() {
       return {
         form: {
           username: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
+          email: ''
         },
         uniqueUsername: true,
         uniqueEmail: true
@@ -118,35 +86,28 @@ import axios from 'axios'
     },
     methods: {
       initForm() {
-        this.form.username = ''
-        this.form.email = ''
-        this.form.password = ''
-        this.form.confirmPassword = ''
-      },
-
-      async signUpUser(payload) {
-        const path = 'http://localhost:5000/sign_up'
-        await axios.post(path, payload)
-          .then((response) => { console.log(response) })
-          .catch((error) => { console.log(error) })
+        this.form.username = this.userInfo.username
+        this.form.email = this.userInfo.email
       },
 
       onSubmit(event) {
         event.preventDefault()
 
-        const payload = this.form
+        const payload = {
+          originalUsername: this.userInfo.username,
+          username: this.form.username,
+          email: this.form.email
+        }
+        this.$emit('userInfoUpdated')
 
-        this.signUpUser(payload)
+        this.$store.dispatch('updateUserInfo', payload)
         this.initForm()
       },
 
       onReset(event) {
         event.preventDefault()
 
-        this.form.username = ''
-        this.form.email = ''
-        this.form.password = ''
-        this.form.confirmPassword = ''
+        this.initForm()
       },
 
       async checkUniqueness(dataType, toBeChecked, value) {
@@ -178,13 +139,19 @@ import axios from 'axios'
         return condition1 && condition2 && condition3
       },
 
-      passwordValidation() {
-        return this.form.password.length > 5 && this.form.password.length < 60
+      userInfo() {
+        return this.$store.getters.userInfo
       },
 
-      confirmPassword() {
-        return this.form.confirmPassword === this.form.password
+      unchangedUserInfo() {
+        const condition1 = this.form.username === this.userInfo.username
+        const condition2 = this.form.email === this.userInfo.email
+
+        return condition1 && condition2
       }
+    },
+    created() {
+      this.initForm()
     }
   }
 
@@ -194,5 +161,4 @@ import axios from 'axios'
 .inputGeneral {
   margin-top: 5em;
 }
-
 </style>

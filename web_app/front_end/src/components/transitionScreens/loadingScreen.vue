@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import birdMemeSlideshow from './subcomponents/birdMemeSlideshow.vue'
+import birdMemeSlideshow from '../subcomponents/birdMemeSlideshow.vue'
 
 export default {
     name: 'loadingScreen',
@@ -34,12 +34,12 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .loadingGeneral {
-    margin-top: 15em;
+    margin-top: $topSpacing;
 }
 
 .loadingMessage {
-    padding-top: 3em;
+    padding-top: $messageSpacing;
 }
 </style>

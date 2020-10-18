@@ -10,23 +10,27 @@
                 </b-button-group>
             </div>
         </div>
-        <ul>
-            <div class='data_container'>
-                <h1 class='headers'>
-                    {{ classNames[shownClass] }}
-                </h1>
-                <h3 class="headers">
-                    {{ classInstances }} instances found
-                </h3>
-                    <p
+        <div class='data_container'>
+            <h1 class='headers'>
+                {{ classNames[shownClass] }}
+            </h1>
+            <h3 class="headers">
+                <small class="instances">{{ classInstances }}</small> instances found
+            </h3>
+            <b-form-group>
+                <b-form-checkbox-group v-model="selected">
+                    <div
                     class="sentences"
                     v-for="opinion in currentlyShownClass"
                     v-bind:key="opinion"
                     >
-                        {{ opinion }}
-                    </p>
-            </div>
-        </ul>
+                        <b-form-checkbox v-bind:value="shownClass + ' : '  + opinion">
+                            {{ opinion }}
+                        </b-form-checkbox>
+                    </div>
+                </b-form-checkbox-group>
+            </b-form-group>
+        </div>
     </div>
 </template>
 
@@ -41,7 +45,8 @@ export default {
                 1: 'Use Cases',
                 2: 'Benefits',
                 3: 'Complaints'
-            }
+            },
+            selected: []
         }
     },
     methods: {
@@ -84,5 +89,9 @@ export default {
 .headers {
     text-align: center;
     border-bottom: groove;
+}
+
+.instances {
+    color: red;
 }
 </style>

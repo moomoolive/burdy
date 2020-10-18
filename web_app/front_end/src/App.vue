@@ -2,15 +2,17 @@
   <div id="app">
     <div id="nav">
       <Header />
-      <Footer />
+      <div class="footer">
+        <Footer />
+      </div>
     </div>
     <router-view/>
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Header from './components/layout/Header.vue'
+import Footer from './components//layout/Footer.vue'
 
 import axios from 'axios'
 
