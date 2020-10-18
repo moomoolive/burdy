@@ -131,8 +131,18 @@ def update_info():
         user.username = new_username
         user.email = new_email
         database.session.commit()
-        # send new JWT with updated credentials
-        return jsonify('Successfully updated profile')
+        
+        jwt_token = jwt.encode({
+            'user': user.username,
+            'email': user.email,
+            'iat': datetime.datetime.utcnow(),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)
+            }, 
+            JWT_SECRET
+            )
+        decoded_token = jwt_token.decode('ASCII')
+
+        return jsonify(decoded_token)
     else:
         return jsonify('Profile was not updated!'), 400
 

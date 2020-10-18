@@ -15,5 +15,9 @@ export default {
     logout: (state) => {
         state.loginStatus = ''
         state.currentJWT = ''
+    },
+
+    updateJWT: (state, updatedToken) => {
+        state.currentJWT = updatedToken
     }
 }

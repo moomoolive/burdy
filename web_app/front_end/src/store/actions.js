@@ -32,5 +32,16 @@ export default {
         delete axios.defaults.headers.common.Authorization
         resolve()
       })
+    },
+
+    updateUserInfo({ commit }, payload) {
+      const path = 'http://localhost:5000/update_info'
+      axios.post(path, payload, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
+        .then((response) => {
+          const updatedToken = response.data
+          localStorage.setItem('token', updatedToken)
+          commit('updateJWT', updatedToken)
+        })
+        .catch((error) => { console.log(error) })
     }
 }

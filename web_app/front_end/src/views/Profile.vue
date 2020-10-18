@@ -88,13 +88,6 @@ import store from '../store/index.js'
         this.form.email = this.userInfo.email
       },
 
-      updateInfo(payload) {
-        const path = 'http://localhost:5000/update_info'
-        axios.post(path, payload, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
-          .then((response) => { console.log(response) })
-          .catch((error) => { console.log(error) })
-      },
-
       onSubmit(event) {
         event.preventDefault()
 
@@ -104,7 +97,7 @@ import store from '../store/index.js'
           email: this.form.email
         }
 
-        this.updateInfo(payload)
+        this.$store.dispatch('updateUserInfo', payload)
         this.initForm()
       },
 
