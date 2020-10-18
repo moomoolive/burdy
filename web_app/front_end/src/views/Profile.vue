@@ -59,7 +59,9 @@
           </b-form-valid-feedback>
         </b-form-group>
 
-        <b-button type="submit" variant="success">Confirm Changes</b-button>
+        <div v-if="!unchangedUserInfo">
+          <b-button type="submit" variant="success">Confirm Changes</b-button>
+        </div>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-container>
@@ -138,6 +140,13 @@ import store from '../store/index.js'
 
       userInfo() {
         return this.$store.getters.userInfo
+      },
+
+      unchangedUserInfo() {
+        const condition1 = this.form.username === this.userInfo.username
+        const condition2 = this.form.email === this.userInfo.email
+
+        return condition1 && condition2
       }
     },
     created() {
