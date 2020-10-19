@@ -3,15 +3,10 @@ from flask import flash, jsonify, request, json, render_template
 import requests
 import tensorflow as tf
 from burdy_app.models import User
-import jwt
-import json
-import datetime
-from burdy_app.utils import token_required
+from burdy_app.utils import token_required, check_user, create_jwt
 import random
 
 model = tf.keras.models.load_model('my_model')
-with open('security_configurations.json') as f:
-    JWT_SECRET = json.load(f)['jwt secret']
 
 @app.route('/', methods=['GET'])
 def home():
@@ -68,7 +63,6 @@ def sign_up():
     user = User(username=username, email=email, password=hashed_password)
     database.session.add(user)
     database.session.commit()
-
     return jsonify(f'Successfully signed up {username} to Burdy!')
 
 @app.route('/check_unique', methods=['POST'])
@@ -97,19 +91,10 @@ def login():
     except:
         return jsonify('Missing Required Data'), 400
 
-    user = User.query.filter_by(username=username).first()
-
+    user = check_user(user_name=username)
     if user and bcrypt.check_password_hash(user.password, password):
-        jwt_token = jwt.encode({
-            'user': user.username,
-            'email': user.email,
-            'iat': datetime.datetime.utcnow(),
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)
-            }, 
-            JWT_SECRET
-            )
-        decoded_token = jwt_token.decode('ASCII')
-        return jsonify(decoded_token)  
+        jwt_token = create_jwt(user)
+        return jsonify(jwt_token)  
     else:
         return jsonify('Invalid username or password'), 401
 
@@ -125,24 +110,14 @@ def update_info():
     except:
         return jsonify('Missing Required Data'), 400
 
-    user = User.query.filter_by(username=original_username).first()
-
+    user = check_user(user_name=original_username)
     if user:
         user.username = new_username
         user.email = new_email
         database.session.commit()
         
-        jwt_token = jwt.encode({
-            'user': user.username,
-            'email': user.email,
-            'iat': datetime.datetime.utcnow(),
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)
-            }, 
-            JWT_SECRET
-            )
-        decoded_token = jwt_token.decode('ASCII')
-
-        return jsonify(decoded_token)
+        jwt_token = create_jwt(user)
+        return jsonify(jwt_token)
     else:
         return jsonify('Profile was not updated!'), 400
 

@@ -3,9 +3,14 @@ import jwt
 from burdy_app.models import User
 import json
 from functools import wraps
+import datetime
 
 with open('security_configurations.json') as f:
     JWT_SECRET = json.load(f)['jwt secret']
+
+def check_user(user_name):
+    user = User.query.filter_by(username=user_name).first()
+    return user
 
 def token_required(function):
     @wraps(function)
@@ -19,7 +24,7 @@ def token_required(function):
             token = authorization_headers[1]
             encoded_token = token.encode('ASCII')
             data = jwt.decode(encoded_token, JWT_SECRET, algorithms=['HS256'])
-            user = User.query.filter_by(username=data['user']).first()
+            user = check_user(username=data['user'])
             if not user:
                 raise RuntimeError('User not found')
             return function(*args, **kwargs)
@@ -29,3 +34,15 @@ def token_required(function):
             print(e)
             return jsonify('Invalid token'), 403
     return _verify
+
+def create_jwt(user_info, expiration_day=3):
+    jwt_token = jwt.encode({
+            'user': user_info.username,
+            'email': user_info.email,
+            'iat': datetime.datetime.utcnow(),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(days=expiration_day)
+            },
+            JWT_SECRET
+            )
+    decoded_token = jwt_token.decode('ASCII')
+    return decoded_token
