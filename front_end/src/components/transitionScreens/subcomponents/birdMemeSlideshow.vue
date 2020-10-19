@@ -26,7 +26,7 @@
     },
     computed: {
         image() {
-            return require(`../../assets/birdMemes/${this.imageNum}.jpg`)
+            return require(`../../../assets/birdMemes/${this.imageNum}.jpg`)
         }
     }
   }
