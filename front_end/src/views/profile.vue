@@ -1,13 +1,19 @@
 <template>
   <div>
-    <update-user-form
-    v-if="showForm"
-    v-on:userInfoUpdated='onFormSubmission'
-    />
-    <confirmation-page
-    v-if="confirmation"
-    confirmationMessage="Your user information has been updated!"
-    />
+    <div>
+      <div class="head">
+        <update-user-form
+        v-if="showForm"
+        v-on:userInfoUpdated='onFormSubmission'
+        />
+      </div>
+      <confirmation-page
+      v-if="confirmation"
+      confirmationMessage="Your user information has been updated!"
+      redirectLink="/"
+      buttonText="To Homepage"
+      />
+    </div>
   </div>
 </template>
 
@@ -37,6 +43,8 @@ export default {
 
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.head {
+  margin-top: $topForm;
+}
 </style>

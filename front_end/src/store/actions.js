@@ -43,5 +43,9 @@ export default {
           commit('updateJWT', updatedToken)
         })
         .catch((error) => { console.log(error) })
+    },
+
+    moveOpinionUnit({ commit }, details) {
+      commit('moveReviewMineData', details)
     }
 }

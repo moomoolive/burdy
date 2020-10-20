@@ -1,7 +1,9 @@
 <template>
-  <div class="home">
-    <h1>Login</h1>
-    <loginForm />
+  <div>
+    <div class="head">
+      <h1>Login</h1>
+      <loginForm />
+    </div>
   </div>
 </template>
 
@@ -16,6 +18,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.head {
+  margin-top: $topForm;
+}
 </style>

@@ -70,7 +70,7 @@ import { mapActions } from 'vuex'
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .inputGeneral {
     margin-top: 14em;
 }

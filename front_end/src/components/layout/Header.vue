@@ -10,10 +10,10 @@
 
             <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <b-nav-item href="#">
+                <b-nav-item>
                     <router-link to="/">Home</router-link>
                 </b-nav-item>
-                <b-nav-item href="#">
+                <b-nav-item>
                     <router-link to="/review_mining">Review Mine</router-link>
                 </b-nav-item>
             </b-navbar-nav>
@@ -31,12 +31,14 @@
                     <div>
                         <div v-if="isLoggedIn">
                             <b-dropdown-item>
-                                <router-link to="/profile">Profile Settings</router-link>
+                                <router-link v-bind:to="'/profile/' + username">
+                                    Profile Settings
+                                </router-link>
                             </b-dropdown-item>
-                            <b-dropdown-item
-                            v-on:click='logout'
-                            >
-                                Sign Out
+                            <b-dropdown-item>
+                                <router-link v-bind:to="'/logout/' + username">
+                                    Logout
+                                </router-link>
                             </b-dropdown-item>
                         </div>
                             <div v-if="!isLoggedIn">
@@ -58,14 +60,6 @@
 <script>
 export default {
     name: 'Header',
-    methods: {
-        logout: function() {
-            this.$store.dispatch('logout')
-                .then(() => {
-                    this.$router.push('/login')
-                })
-        }
-    },
     computed: {
         isLoggedIn() { return this.$store.getters.isLoggedIn },
 
@@ -78,7 +72,7 @@ export default {
 
 <style lang="scss" scoped>
 .main {
-    color: $mainGreen;
+    color: $primaryColor;
 }
 
 .userInfo {

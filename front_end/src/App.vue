@@ -14,8 +14,6 @@
 import Header from './components/layout/Header.vue'
 import Footer from './components//layout/Footer.vue'
 
-import axios from 'axios'
-
 export default {
   components: {
     Header,
@@ -35,7 +33,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: $layoutPrimary;
 }
 
 #nav {
@@ -43,10 +41,10 @@ export default {
 
   a {
     font-weight: bold;
-    color: #D3D3D3;
+    color: $layoutSecondary;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: $primaryColor;
     }
   }
 }

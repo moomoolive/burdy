@@ -91,7 +91,7 @@ def login():
     except:
         return jsonify('Missing Required Data'), 400
 
-    user = check_user(user_name=username)
+    user = check_user(username=username)
     if user and bcrypt.check_password_hash(user.password, password):
         jwt_token = create_jwt(user)
         return jsonify(jwt_token)  
@@ -110,7 +110,7 @@ def update_info():
     except:
         return jsonify('Missing Required Data'), 400
 
-    user = check_user(user_name=original_username)
+    user = check_user(username=original_username)
     if user:
         user.username = new_username
         user.email = new_email

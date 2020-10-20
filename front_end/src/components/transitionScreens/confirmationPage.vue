@@ -6,6 +6,13 @@
       <div class="confirmationMessage">
         <h3>{{ confirmationMessage }}</h3>
       </div>
+      <div v-if="!!buttonText">
+        <b-button class="redirectButton">
+          <router-link v-bind:to="redirectLink">
+            <div class="linkText">{{ buttonText }}</div>
+          </router-link>
+        </b-button>
+      </div>
   </div>
 </template>
 
@@ -13,7 +20,12 @@
 export default {
     name: 'confirmationPage',
     props: {
-      confirmationMessage: String
+      confirmationMessage: String,
+      redirectLink: String,
+      buttonText: {
+        type: String,
+        required: false
+        }
     }
 }
 </script>
@@ -21,10 +33,21 @@ export default {
 <style lang="scss" scoped>
 .confirmationIcon {
   margin-top: $topSpacing;
-  color: $mainGreen;
+  color: $primaryColor;
 }
 
 .confirmationMessage {
   padding-top: $messageSpacing;
+  padding-bottom: $messageSpacing;
+}
+
+.redirectButton {
+  border-color: $primaryColor !important;
+  background-color: $secondaryColor !important;
+}
+
+.linkText {
+  color: $primaryColor;
+  font-weight: bold;
 }
 </style>

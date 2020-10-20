@@ -32,7 +32,7 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .general {
     margin-top: 2em;
 }

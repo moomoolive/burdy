@@ -59,18 +59,16 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
-        if (this.reviewMinedData && this.dataRecieved) {
-            const answer = window.confirm('Do you really want to leave? This data will be erased!')
-            if (answer) {
-                next()
-            } else {
-                next(false)
-            }
-        }
+    const answer = window.confirm('Do you really want to leave? Any data on this page will be erased!')
+    if (answer) {
+        next()
+    } else {
+        next(false)
     }
+  }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

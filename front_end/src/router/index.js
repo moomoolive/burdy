@@ -7,6 +7,7 @@ import signUp from '../views/signUp.vue'
 import profile from '../views/profile.vue'
 import login from '../views/login.vue'
 import store from '../store/index.js'
+import logout from '../views/logout.vue'
 
 Vue.use(VueRouter)
 
@@ -29,14 +30,22 @@ const routes = [{
     component: signUp
   },
   {
-    path: '/profile',
+    path: '/profile/:username',
     name: 'profile',
-    component: profile
+    component: profile,
+    meta: {
+      requireAuthorization: true
+    }
   },
   {
     path: '/login',
     name: 'login',
     component: login
+  },
+  {
+    path: '/logout/:username',
+    name: 'logout',
+    component: logout
   }
 ]
 

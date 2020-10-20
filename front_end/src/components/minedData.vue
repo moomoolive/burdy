@@ -1,15 +1,42 @@
 <template>
     <div>
-        <div class="buttons">
-            <div class="mt-3">
-                <b-button-group size="large">
-                    <b-button variant="secondary" v-on:click="displayClass(0)">Irrelevant</b-button>
-                    <b-button variant="primary" v-on:click="displayClass(1)">Use Cases</b-button>
-                    <b-button variant="success" v-on:click="displayClass(2)">Benefits</b-button>
-                    <b-button variant="warning" v-on:click="displayClass(3)">Complaints</b-button>
-                </b-button-group>
+        <div>
+            <h2 class="head">Classifications</h2>
+            <div class="buttons">
+                <div class="mt-3">
+                    <b-button-group size="large">
+                        <b-button variant="secondary" v-on:click="displayClass(0)">Irrelevant</b-button>
+                        <b-button variant="primary" v-on:click="displayClass(1)">Use Cases</b-button>
+                        <b-button variant="success" v-on:click="displayClass(2)">Benefits</b-button>
+                        <b-button variant="warning" v-on:click="displayClass(3)">Complaints</b-button>
+                    </b-button-group>
+                </div>
             </div>
         </div>
+        <div>
+            <h2 class="head">Move Selected Opinions to Desired Class</h2>
+            <div class="buttons">
+                <div class="mt-3">
+                    <b-button-group size="large">
+                        <b-button variant="secondary" v-on:click="movetoClass(0)">Irrelevant</b-button>
+                        <b-button variant="primary" v-on:click="movetoClass(1)">Use Cases</b-button>
+                        <b-button variant="success" v-on:click="movetoClass(2)">Benefits</b-button>
+                        <b-button variant="warning" v-on:click="movetoClass(3)">Complaints</b-button>
+                    </b-button-group>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h2 class="head">Export Selected Opinions to:</h2>
+            <div class="buttons">
+                <div class="mt-3">
+                    <b-button-group size="large">
+                        <b-button variant="secondary">CSV</b-button>
+                    </b-button-group>
+                </div>
+            </div>
+        </div>
+        <p>{{ selected }}</p>
         <div class='data_container'>
             <h1 class='headers'>
                 {{ classNames[shownClass] }}
@@ -21,10 +48,12 @@
                 <b-form-checkbox-group v-model="selected">
                     <div
                     class="sentences"
-                    v-for="opinion in currentlyShownClass"
+                    v-for="(opinion, index) in currentlyShownClass"
                     v-bind:key="opinion"
                     >
-                        <b-form-checkbox v-bind:value="shownClass + ' : '  + opinion">
+                        <b-form-checkbox
+                        v-bind:value="shownClass + ':' + index + ':' + opinion"
+                        >
                             {{ opinion }}
                         </b-form-checkbox>
                     </div>
@@ -52,6 +81,14 @@ export default {
     methods: {
         displayClass: function(desiredClass) {
             this.shownClass = desiredClass
+        },
+
+        movetoClass(desiredClass) {
+            const movementDetails = {
+                targetClass: desiredClass,
+                info: this.selected
+            }
+            this.$store.dispatch('moveOpinionUnit', movementDetails)
         }
     },
     computed: {
@@ -68,7 +105,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .buttons {
     margin-bottom: 2em;
     margin-top: 2em;
@@ -93,5 +130,9 @@ export default {
 
 .instances {
     color: red;
+}
+
+.head {
+    margin-top: 1em;
 }
 </style>

@@ -20,8 +20,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .copyright {
     font-size: x-small;
+    color: $layoutSecondary;
 }
 </style>

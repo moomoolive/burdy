@@ -157,8 +157,8 @@ import store from '../../store/index.js'
 
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .inputGeneral {
-  margin-top: 5em;
+  margin-top: $headInputSpace;
 }
 </style>

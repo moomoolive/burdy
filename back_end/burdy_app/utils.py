@@ -8,8 +8,8 @@ import datetime
 with open('security_configurations.json') as f:
     JWT_SECRET = json.load(f)['jwt secret']
 
-def check_user(user_name):
-    user = User.query.filter_by(username=user_name).first()
+def check_user(**kwargs):
+    user = User.query.filter_by(**kwargs).first()
     return user
 
 def token_required(function):
