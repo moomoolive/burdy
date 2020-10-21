@@ -22,21 +22,20 @@ export default {
     },
 
     moveReviewMineData: (state, movement) => {
-        const target = state.reviewMinedData[movement.targetClass]
-        for (let i = 0; i < movement.info.length; i++) {
-            const opinion = movement.info[i]
-            const classNumber = opinion[0]
-            const orderNumber = opinion[2]
-            const datacopy = state.reviewMineData[classNumber][orderNumber]
-            delete state.reviewMineData[classNumber][orderNumber]
-            target.push(datacopy)
+        const data = state.reviewMinedData
+        const target = data[movement.targetClass]
+        for (const opinion of movement.info) {
+            const key = opinion[0]
+            const index = opinion[2]
+            const datapoint = data[key][index]
+            delete data[key][index]
+            target.push(datapoint)
         }
-        for (const classification in state.reviewMineData) {
-            for (const opinion in classification) {
-                if (opinion === undefined) {
-                    const deleter = classification.splice(i, i + 1)
-                }
-            }
+
+        for (const key in data) {
+            data[key] = data[key].filter((element) => {
+                return element !== undefined
+            })
         }
     }
 }
