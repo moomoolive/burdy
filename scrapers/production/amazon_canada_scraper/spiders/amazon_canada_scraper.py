@@ -5,7 +5,7 @@ from .preprocess import preprocess_review
 
 class Amazon_review_spider(scrapy.Spider):
 
-    name = "burdy_scraper"  
+    name = "burdy_production"  
     start_urls = [
         "https://www.amazon.ca/Echo-Dot-3rd-gen-Charcoal/product-reviews/B07PDHT5XP/ref=cm_cr_arp_d_paging_btm_next_2?ie=UTF8&reviewerType=all_reviews&pageNumber=1"
     ]    
@@ -20,9 +20,3 @@ class Amazon_review_spider(scrapy.Spider):
                 yield{
                     'Opinion Unit' : opinion_unit
                 }
-
-        #Only for Data Labeling
-        #next_page = response.css('li.a-last a::attr(href)').get()
-
-        #if next_page is not None:
-            #yield response.follow(next_page, callback=self.parse)

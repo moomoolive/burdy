@@ -1,54 +1,11 @@
-from burdy_app import app, database, bcrypt
-from flask import flash, jsonify, request, json, render_template
-import requests
-import tensorflow as tf
-from burdy_app.models import User
-from burdy_app.utils import token_required, check_user, create_jwt
-import random
+from flask import Blueprint, request, jsonify
+from burdy.utils import check_user, token_required, create_jwt
+from burdy.models import User
+from burdy import database, bcrypt
 
-model = tf.keras.models.load_model('my_model')
+users = Blueprint('users', __name__)
 
-@app.route('/', methods=['GET'])
-def home():
-    return render_template('home_page.html')
-
-@app.route('/review_mine', methods=['POST'])
-@token_required
-def review_mine():
-    try:
-        url_data = request.get_json()
-        url = url_data.get('url')
-    except:
-        return jsonify('Missing Required Data'), 400
-
-    try:
-        path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
-        scrapy_request = requests.get(path + url)
-    except requests.Timeout:
-        return jsonify('Scrapy service is probably not active, check back later'), 408
-    except Exception:
-        return jsonify('Scrapy service error'), 500
-    data = scrapy_request.json()['items']
-
-    return_dict = {
-        0: [],
-        1: [],
-        2: [],
-        3: []
-    }
-    for opinion_unit in data:
-        if opinion_unit['Opinion Unit'] == '':
-            data.remove(opinion_unit)
-            continue
-        tensor = tf.constant([opinion_unit['Opinion Unit']], dtype=tf.string)
-        prediction = round(model.predict(tensor)[0][0] + (random.random() * 3))
-        if prediction <= 0:
-            prediction *= -1
-        return_dict[prediction].append(opinion_unit['Opinion Unit'])
-    
-    return jsonify(return_dict)
-
-@app.route('/sign_up', methods=['POST'])
+@users.route('/sign_up', methods=['POST'])
 def sign_up():
     try:
         data = request.get_json()
@@ -65,7 +22,7 @@ def sign_up():
     database.session.commit()
     return jsonify(f'Successfully signed up {username} to Burdy!')
 
-@app.route('/check_unique', methods=['POST'])
+@users.route('/check_unique', methods=['POST'])
 def check_uniqueness():
     try:
         data = request.get_json()
@@ -82,7 +39,7 @@ def check_uniqueness():
         response = 'unique'
     return jsonify(response)
 
-@app.route('/login', methods=['POST'])
+@users.route('/login', methods=['POST'])
 def login():
     try:
         data = request.get_json()
@@ -98,7 +55,7 @@ def login():
     else:
         return jsonify('Invalid username or password'), 401
 
-@app.route('/update_info', methods=['POST'])
+@users.route('/update_info', methods=['POST'])
 @token_required
 def update_info():
     try:
@@ -120,6 +77,3 @@ def update_info():
         return jsonify(jwt_token)
     else:
         return jsonify('Profile was not updated!'), 400
-
-
-    

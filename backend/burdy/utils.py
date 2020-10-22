@@ -1,12 +1,12 @@
 from flask import request, jsonify, request
 import jwt
-from burdy_app.models import User
+from burdy.models import User
 import json
 from functools import wraps
 import datetime
+from burdy.config import Config
 
-with open('security_configurations.json') as f:
-    JWT_SECRET = json.load(f)['jwt secret']
+JWT_SECRET = Config.JWT_SECRET
 
 def check_user(**kwargs):
     user = User.query.filter_by(**kwargs).first()

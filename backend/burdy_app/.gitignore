@@ -1,8 +1,0 @@
-# SQL database
-site.db
-
-# tensorflow model
-my_model/
-
-#compiled files
-__pycache__/

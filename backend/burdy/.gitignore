@@ -1,0 +1,5 @@
+# testing SQL database
+site.db
+
+# tensorflow model
+**/my_model

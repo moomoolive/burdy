@@ -1,2 +1,8 @@
+# tensorflow model building files
 neural_network/
-/.vscode/
+
+# vscode configurations
+**/.vscode
+
+# compiled python files
+**/__pycache__
