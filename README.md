@@ -18,38 +18,3 @@ Sentimental analysis is done with a custom-made Tensorflow machine learning Algo
 Feel free to use any of the code at your own liking - hope it helps you out.
 
 The 'Enviroment' folder is a folder that contains the virtual enviroment you will need to develop the script. I used virtualenv to create it.
-
-## Structure
-
-```bash
-├── README.md               # This file
-├── burdy_enviroment/
-    ├── enviromental_requirements.txt
-    └── pyvenv.cfg
-└── data_collection/
-    ├── __pycache__/     
-        ├── opinion_unit_devider.cpython-38.pyc
-        └── opinion_unit_divider.cpython-38.pyc 
-    ├── amazon_canada_scraper/     
-        ├── scrapy.cfg
-        ├── amazon_canada_scraper/
-            ├── __init__.py
-            ├── items.py
-            ├── middlewares.py
-            ├── pipelines.py
-            ├── settings.py
-            ├── __pycache__/
-                ├── __init__.cpython-38.pyc  
-                └── settings.cpython-38.pyc
-            └── spiders/
-                ├── __init__.py 
-                ├── amazon_canada_scraper.py
-                ├── opinion_unit_divider.py 
-                ├── preprocess.py 
-                └── __pycache__/
-                    ├── __init__.cpython-38.pyc 
-                    ├── amazon_canada_scraper.cpython-38.pyc
-                    ├── opinion_unit_divider.cpython-38.pyc
-                    └── preprocess.cpython-38.pyc 
-        └── logs/ burdy_scraper/
-```
