@@ -1,8 +1,8 @@
-from burdy import create_app
+from backend.burdy import create_app
 from waitress import serve
-import sys
+import tensorflow as tf
 
-sys.path.append('C:\\Users\\Mostafa Elbannan\\Desktop\\Programming\\Projects\\burdy_app\\backend\\burdy\\main')
+tensorflow_model = tf.keras.models.load_model('my_model')
 app = create_app()
 
 if __name__ == '__main__':

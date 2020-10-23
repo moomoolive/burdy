@@ -1,10 +1,10 @@
 from flask import request, jsonify, request
 import jwt
-from burdy.models import User
+from backend.burdy.models import User
 import json
 from functools import wraps
 import datetime
-from burdy.config import Config
+from backend.burdy.config import Config
 
 JWT_SECRET = Config.JWT_SECRET
 

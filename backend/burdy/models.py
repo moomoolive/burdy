@@ -1,4 +1,4 @@
-from burdy import database
+from backend.burdy import database
 
 class User(database.Model):
     id = database.Column(database.Integer, primary_key=True)

@@ -2,12 +2,11 @@ from flask import Blueprint, render_template, jsonify, request
 import requests
 import tensorflow as tf
 import random
-from burdy.utils import token_required
+from backend.burdy.utils import token_required
 import tensorflow as tf
+from backend.run import tensorflow_model
 
 main = Blueprint('main', __name__)
-
-tensorflow_model = tf.keras.models.load_model('my_model')
 
 @main.route('/', methods=['GET'])
 def home():
@@ -23,7 +22,7 @@ def review_mine():
         return jsonify('Missing Required Data'), 400
 
     try:
-        path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
+        path = "http://localhost:9080/crawl.json?spider_name=backend.burdy_scraper&url="
         scrapy_request = requests.get(path + url)
     except requests.Timeout:
         return jsonify('Scrapy service is probably not active, check back later'), 408

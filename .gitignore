@@ -6,3 +6,6 @@ neural_network/
 
 # compiled python files
 **/__pycache__
+
+# tensorflow save model object
+**/my_model
