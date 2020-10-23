@@ -2,8 +2,10 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-from backend.burdy.config import Config
+from burdy.config import Config
+import tensorflow as tf
 
+tensorflow_model = tf.keras.models.load_model('my_model')
 cors = CORS()
 database = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -16,8 +18,8 @@ def create_app(config_class=Config):
     database.init_app(app)
     bcrypt.init_app(app)
     
-    from backend.burdy.blueprints.users.routes import users
-    from backend.burdy.blueprints.main.routes import main
+    from burdy.blueprints.users.routes import users
+    from burdy.blueprints.main.routes import main
 
     app.register_blueprint(users)
     app.register_blueprint(main)

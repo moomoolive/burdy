@@ -1,8 +1,7 @@
-from backend.burdy import create_app
+from burdy import create_app
 from waitress import serve
 import tensorflow as tf
 
-tensorflow_model = tf.keras.models.load_model('my_model')
 app = create_app()
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
-from backend.burdy.utils import check_user, token_required, create_jwt
-from backend.burdy.models import User
-from backend.burdy import database, bcrypt
+from burdy.utils import check_user, token_required, create_jwt
+from burdy.models import User
+from burdy import database, bcrypt
 
 users = Blueprint('users', __name__)
 
@@ -20,7 +20,7 @@ def sign_up():
     user = User(username=username, email=email, password=hashed_password)
     database.session.add(user)
     database.session.commit()
-    return jsonify(f'Successfully signed up {username} to backend.burdy!')
+    return jsonify(f'Successfully signed up {username} to burdy!')
 
 @users.route('/check_unique', methods=['POST'])
 def check_uniqueness():
