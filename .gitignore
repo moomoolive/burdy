@@ -9,3 +9,6 @@ neural_network/
 
 # tensorflow save model object
 **/my_model
+
+# python environments >> find needed libraries in their respective folders
+python_environments/

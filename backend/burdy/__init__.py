@@ -5,7 +5,7 @@ from flask_bcrypt import Bcrypt
 from burdy.config import Config
 import tensorflow as tf
 
-tensorflow_model = tf.keras.models.load_model('my_model')
+#tensorflow_model = tf.keras.models.load_model('my_model')
 cors = CORS()
 database = SQLAlchemy()
 bcrypt = Bcrypt()

@@ -4,7 +4,7 @@ import tensorflow as tf
 import random
 from burdy.utils import token_required
 import tensorflow as tf
-from burdy import tensorflow_model
+#from burdy import tensorflow_model
 
 main = Blueprint('main', __name__)
 
@@ -36,6 +36,7 @@ def review_mine():
         2: [],
         3: []
     }
+    """
     for opinion_unit in data:
         if opinion_unit['Opinion Unit'] == '':
             data.remove(opinion_unit)
@@ -44,6 +45,6 @@ def review_mine():
         prediction = round(tensorflow_model.predict(tensor)[0][0] + (random.random() * 3))
         if prediction <= 0:
             prediction *= -1
-        return_dict[prediction].append(opinion_unit['Opinion Unit'])
+        return_dict[prediction].append(opinion_unit['Opinion Unit'])"""
     
     return jsonify(return_dict)
