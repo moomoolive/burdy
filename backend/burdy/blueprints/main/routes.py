@@ -4,9 +4,12 @@ import tensorflow as tf
 import random
 from burdy.utils import token_required
 import tensorflow as tf
+from burdy.config import Config
 #from burdy import tensorflow_model
 
 main = Blueprint('main', __name__)
+
+service = Config.SCRAPER_SERVICE
 
 @main.route('/', methods=['GET'])
 def home():
@@ -22,20 +25,21 @@ def review_mine():
         return jsonify('Missing Required Data'), 400
 
     try:
-        path = "http://localhost:9080/crawl.json?spider_name=burdy_scraper&url="
+        path = f"http://{service}:9080/crawl.json?spider_name=burdy_production&url="
         scrapy_request = requests.get(path + url)
     except requests.Timeout:
         return jsonify('Scrapy service is probably not active, check back later'), 408
     except Exception:
         return jsonify('Scrapy service error'), 500
     data = scrapy_request.json()['items']
-
+    
     return_dict = {
         0: [],
         1: [],
         2: [],
         3: []
     }
+    # Fix tensorflow import problem
     """
     for opinion_unit in data:
         if opinion_unit['Opinion Unit'] == '':

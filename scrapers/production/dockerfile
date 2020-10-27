@@ -1,4 +1,4 @@
-FROM python:3.8.1-slim-buster
+FROM python:3.7-slim-buster
 
 WORKDIR /usr/src/app
 
@@ -9,9 +9,10 @@ RUN apt-get update && \
 apt-get install -y --no-install-recommends gcc
 
 # should create non-root user somewhere here
-
 COPY . /usr/src/app
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
-RUN pip install gunicorn
+RUN pip install -r requirements.txt 
+RUN python setup.py
+
+EXPOSE 9080

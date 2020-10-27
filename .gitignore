@@ -12,3 +12,6 @@ neural_network/
 
 # python environments >> find needed libraries in their respective folders
 python_environments/
+
+# production environmental variables
+/.env.prod
