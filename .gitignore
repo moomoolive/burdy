@@ -15,3 +15,9 @@ python_environments/
 
 # production environmental variables
 /.env.prod
+
+# All scrapyrt logs
+**/logs 
+
+# batch scripts to open all backend services with debug logs on
+dev_server_scripts/

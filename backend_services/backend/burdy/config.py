@@ -6,3 +6,4 @@ class Config:
     JWT_SECRET = os.getenv("JWT_SECRET" ,"%SECretKeyss$$$%")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SCRAPER_SERVICE = os.getenv('SCRAPER_SERVICE', 'localhost')
+    TENSORFLOW = os.getenv('TENSORFLOW_API', 'localhost')

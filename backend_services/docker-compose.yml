@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+    web:
+        build: ./backend
+        command: gunicorn --bind 0.0.0.0:4999 run:app
+        expose:
+            - 4999
+        env_file:
+            - ./backend/.env.prod
+    scraper:
+        build: ./scrapers/production
+        command: scrapyrt -i 0.0.0.0
+        expose:
+            - 9080
+    nginx:
+        build: ./nginx
+        ports:
+            - 5000:80
+        depends_on:
+            - web
+    tensorflow_API:
+        build: ./tensorflow_API
+        command: gunicorn --bind 0.0.0.0:5001 app:app
+        expose:
+            - 5001
+        env_file:
+            - ./tensorflow_API/.env.prod
