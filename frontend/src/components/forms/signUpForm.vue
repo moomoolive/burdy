@@ -101,6 +101,7 @@
 
 <script>
 import axios from 'axios'
+import utils from '../../utils/functions.js'
 
   export default {
     name: 'signUpForm',
@@ -124,19 +125,12 @@ import axios from 'axios'
         this.form.confirmPassword = ''
       },
 
-      async signUpUser(payload) {
-        const path = 'http://localhost:5000/sign_up'
-        await axios.post(path, payload)
-          .then((response) => { console.log(response) })
-          .catch((error) => { console.log(error) })
-      },
-
       onSubmit(event) {
         event.preventDefault()
 
         const payload = this.form
 
-        this.signUpUser(payload)
+        this.$store.dispatch('signUpUser', payload)
         this.initForm()
       },
 
@@ -149,16 +143,8 @@ import axios from 'axios'
         this.form.confirmPassword = ''
       },
 
-      async checkUniqueness(dataType, toBeChecked, value) {
-        const path = 'http://localhost:5000/check_unique'
-        const payload = {
-          type: dataType,
-          data: toBeChecked
-        }
-        const response = await axios.post(path, payload)
-        this[value] = response.data === 'unique'
-
-        return this[value]
+      checkUniqueness(...args) {
+        return utils.checkUniqueness(...args)
       }
     },
     computed: {

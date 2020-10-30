@@ -71,90 +71,81 @@
 <script>
 import axios from 'axios'
 import store from '../../store/index.js'
+import utils from '../../utils/functions.js'
 
-  export default {
-    name: 'updateUserForm',
-    data() {
-      return {
-        form: {
-          username: '',
-          email: ''
-        },
-        uniqueUsername: true,
-        uniqueEmail: true
-      }
-    },
-    methods: {
-      initForm() {
-        this.form.username = this.userInfo.username
-        this.form.email = this.userInfo.email
+export default {
+  name: 'updateUserForm',
+  data() {
+    return {
+      form: {
+        username: '',
+        email: ''
       },
-
-      onSubmit(event) {
-        event.preventDefault()
-
-        const payload = {
-          originalUsername: this.userInfo.username,
-          username: this.form.username,
-          email: this.form.email
-        }
-        this.$emit('userInfoUpdated')
-
-        this.$store.dispatch('updateUserInfo', payload)
-        this.initForm()
-      },
-
-      onReset(event) {
-        event.preventDefault()
-
-        this.initForm()
-      },
-
-      async checkUniqueness(dataType, toBeChecked, value) {
-        const path = 'http://localhost:5000/check_unique'
-        const payload = {
-          type: dataType,
-          data: toBeChecked
-        }
-        const response = await axios.post(path, payload)
-        this[value] = response.data === 'unique'
-
-        return this[value]
-      }
-    },
-    computed: {
-      usernameValidation() {
-        const condition1 = this.form.username.length > 0
-        const condition2 = this.form.username.length < 21
-        const condition3 = this.uniqueUsername
-
-        return condition1 && condition2 && condition3
-      },
-
-      emailValidation() {
-        const condition1 = this.form.email.length > 0
-        const condition2 = this.form.email.length < 121
-        const condition3 = this.uniqueEmail
-
-        return condition1 && condition2 && condition3
-      },
-
-      userInfo() {
-        return this.$store.getters.userInfo
-      },
-
-      unchangedUserInfo() {
-        const condition1 = this.form.username === this.userInfo.username
-        const condition2 = this.form.email === this.userInfo.email
-
-        return condition1 && condition2
-      }
-    },
-    created() {
-      this.initForm()
+      uniqueUsername: true,
+      uniqueEmail: true
     }
-  }
+  },
+  methods: {
+    initForm() {
+      this.form.username = this.userInfo.username
+      this.form.email = this.userInfo.email
+    },
 
+    onSubmit(event) {
+      event.preventDefault()
+
+      const payload = {
+        originalUsername: this.userInfo.username,
+        username: this.form.username,
+        email: this.form.email
+      }
+      this.$store.dispatch('updateUserInfo', payload)
+      this.initForm()
+    },
+
+    onReset(event) {
+      event.preventDefault()
+
+      this.initForm()
+    },
+
+    checkUniqueness(...args) {
+      return utils.checkUniqueness(...args)
+    }
+
+  },
+  computed: {
+    usernameValidation() {
+      const condition1 = this.form.username.length > 0
+      const condition2 = this.form.username.length < 21
+      const condition3 = this.uniqueUsername
+
+      return condition1 && condition2 && condition3
+    },
+
+    emailValidation() {
+      const condition1 = this.form.email.length > 0
+      const condition2 = this.form.email.length < 121
+      const condition3 = this.uniqueEmail
+
+      return condition1 && condition2 && condition3
+    },
+
+    userInfo() {
+      return this.$store.getters.userInfo
+    },
+
+    unchangedUserInfo() {
+      const condition1 = this.form.username === this.userInfo.username
+      const condition2 = this.form.email === this.userInfo.email
+
+      return condition1 && condition2
+    }
+  },
+  created() {
+    this.initForm()
+  }
+}
 </script>
 
 <style lang="scss" scoped>

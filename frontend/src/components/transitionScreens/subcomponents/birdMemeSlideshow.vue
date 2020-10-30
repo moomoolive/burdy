@@ -17,7 +17,7 @@ export default {
     }
   },
   created: function() {
-    this.imageNum = utils.randomNum(9)
+    this.imageNum = utils.randomNumber(9)
     window.setInterval(() => {
         this.changeImage()
         }, 5000)

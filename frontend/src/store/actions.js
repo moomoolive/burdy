@@ -8,7 +8,7 @@ export default {
         const path = 'http://localhost:5000/review_mine'
         axios.post(path, url, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
           .then((response) => { commit('setData', response.data) })
-          .catch((error) => { utils.programError(error, commit) })
+          .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
     },
 
     fetchJWT({ commit }, payload) {
@@ -41,14 +41,20 @@ export default {
         .then((response) => {
           const updatedToken = response.data
           localStorage.setItem('token', updatedToken)
-          commmit('success')
+          utils.updateProgramStatus(error, commit, 'success')
           commit('updateJWT', updatedToken)
-          commit('clearError')
         })
-        .catch((error) => { utils.programError(error, commit) })
+        .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
     },
 
     moveOpinionUnit({ commit }, details) {
       commit('moveReviewMineData', details)
+    },
+
+    signUpUser({ commit }, payload) {
+      const path = 'http://localhost:5000/sign_up'
+      axios.post(path, payload)
+        .then((response) => { utils.updateProgramStatus(response.data, commit, 'success') })
+        .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
     }
 }
