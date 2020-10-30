@@ -1,5 +1,9 @@
 export default {
     reviewMinedData: '',
     currentJWT: localStorage.getItem('token') || '',
-    loginStatus: ''
+    loginStatus: '',
+    programStatus: {
+        status: '',
+        errorMessage: ''
+    }
 }

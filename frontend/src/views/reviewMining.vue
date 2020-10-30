@@ -43,6 +43,14 @@ export default {
   computed: {
     reviewMinedData() {
       return this.$store.state.reviewMinedData
+    },
+
+    programStatus() {
+      return this.$store.state.programStatus.status
+    },
+
+    programStatusMessage() {
+      return this.$store.state.programStatus.errorMessage
     }
   },
   watch: {
@@ -51,10 +59,15 @@ export default {
         this.showInputForm = false
         this.loading = false
         this.dataRecieved = true
-      } else {
+      }
+    },
+
+    programStatus(value) {
+      if (this.programStatus === 'error') {
         this.showInputForm = true
         this.loading = false
         this.dataRecieved = false
+        alert(this.programStatusMessage)
       }
     }
   },

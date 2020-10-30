@@ -37,5 +37,19 @@ export default {
                 return element !== undefined
             })
         }
+    },
+
+    errorStatus: (state, errorMessage) => {
+        state.programStatus.status = 'error'
+        state.programStatus.errorMessage = errorMessage
+    },
+
+    clearError: (state) => {
+        state.programStatus.status = ''
+        state.programStatus.errorMessage = ''
+    },
+
+    success: (state) => {
+        state.programStatus.status = 'success'
     }
 }

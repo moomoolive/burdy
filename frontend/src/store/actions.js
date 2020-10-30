@@ -1,4 +1,5 @@
 import axios from 'axios'
+import utils from '../utils/functions.js'
 
 import store from './index.js'
 
@@ -7,7 +8,7 @@ export default {
         const path = 'http://localhost:5000/review_mine'
         axios.post(path, url, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
           .then((response) => { commit('setData', response.data) })
-          .catch((error) => { console.log('something went wrong', error) })
+          .catch((error) => { utils.programError(error, commit) })
     },
 
     fetchJWT({ commit }, payload) {
@@ -40,9 +41,11 @@ export default {
         .then((response) => {
           const updatedToken = response.data
           localStorage.setItem('token', updatedToken)
+          commmit('success')
           commit('updateJWT', updatedToken)
+          commit('clearError')
         })
-        .catch((error) => { console.log(error) })
+        .catch((error) => { utils.programError(error, commit) })
     },
 
     moveOpinionUnit({ commit }, details) {

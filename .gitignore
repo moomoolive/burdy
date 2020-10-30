@@ -14,10 +14,10 @@ neural_network/
 python_environments/
 
 # production environmental variables
-/.env.prod
+**/.env.prod
 
 # All scrapyrt logs
 **/logs 
 
 # batch scripts to open all backend services with debug logs on
-dev_server_scripts/
+util_scripts/

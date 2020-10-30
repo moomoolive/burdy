@@ -1,4 +1,20 @@
-export default function sleep(ms) {
-    // use with async function, put await infront of this function
-    return new Promise(resolve => setTimeout(resolve, ms))
+const functions = {
+
+    sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms))
+    },
+
+    async programError(error, commit) {
+        commit('errorStatus', error)
+            await this.sleep(3000)
+            .then(() => {
+                commit('clearError')
+            })
+    },
+
+    randomNum(maxRange) {
+        return Math.floor(Math.random() * maxRange)
+    }
 }
+
+export default functions

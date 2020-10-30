@@ -8,19 +8,23 @@ if %Response%==n goto:end
 
 :start
     cls
-    echo Type 'all' to run all servers, and code editor.
-    echo Type 'serve' to run all servers, and not open code editor.
+    echo Type 'all' to run all servers.
+    echo Type 'back' to run all backend servers.
     echo Type 'one' to run only burdy.
     echo Type 'no' to exit script.
 
-    cd dev_server_scripts
+    cd util_scripts/dev_servers
 
     set /p Response= please enter response:
     if %Response%==all goto:all
+    if %Response%==back goto:back
     if %Response%==one goto:one
     if %Response%==no goto:end
 
     :all
+        start frontend.bat
+
+    :back
         start tensorflow_API.bat
         start scraper.bat
 

@@ -9,7 +9,7 @@
 
 <script>
 import confirmationPage from '../components/transitionScreens/confirmationPage.vue'
-import sleep from '../utils/functions.js'
+import utils from '../utils/functions.js'
 
 export default {
     name: 'logout',
@@ -19,7 +19,7 @@ export default {
     mounted() {
         this.$nextTick(async function() {
             this.$store.dispatch('logout')
-            await sleep(3000)
+            await utils.sleep(3000)
             .then(() => {
                 this.$router.push('/login/')
             })
