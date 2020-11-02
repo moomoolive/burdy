@@ -27,4 +27,4 @@ Microservices:
 
 * Tensorflow Prediction API: the role of this microservice was to take all scraped amazon reviews and classify them into classes that may be useful to a copywriter. Look at classifications PDF if you're interested. This was a Flask Based API, and housed a custom-made Tensorflow ML Algorithim. 
 
-Use any of the code at your liking, and if you have any questions just send me message.
+Use any of the code at your liking, and if you have any questions just send me a message.
