@@ -34,54 +34,45 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
-  export default {
-    name: 'loginForm',
-    data() {
-      return {
-        username: '',
-        password: ''
-      }
+export default {
+  name: 'loginForm',
+  data() {
+    return {
+      username: '',
+      password: ''
+    }
+  },
+  methods: {
+    initForm() {
+      this.username = ''
+      this.password = ''
     },
-    methods: {
-        ...mapActions(['fetchJWT']),
-
-      initForm() {
-        this.username = ''
-        this.password = ''
-      },
-
-      onSubmit(event) {
-        event.preventDefault()
-
-        const payload = {
-            username: this.username,
-            password: this.password
-        }
-
-        this.fetchJWT(payload)
-        this.initForm()
-      },
-
-      onReset(event) {
-        event.preventDefault()
-
-        this.initForm()
+    onSubmit(event) {
+      event.preventDefault()
+      const payload = {
+          username: this.username,
+          password: this.password
       }
+      this.$store.dispatch('formSubmisson')
+      this.$store.dispatch('fetchJWT', payload)
+      this.initForm()
     },
-    watch: {
-      login() {
-        if (this.login === 'success') this.$router.push('/')
-      }
-    },
-    computed: {
-      login() {
-        return this.$store.state.loginStatus
-      }
+    onReset(event) {
+      event.preventDefault()
+      this.initForm()
+    }
+  },
+  watch: {
+    login() {
+      if (this.login === 'success') this.$router.push('/')
+    }
+  },
+  computed: {
+    login() {
+      return this.$store.state.loginStatus
     }
   }
-
+}
 </script>
 
 <style lang="scss" scoped>

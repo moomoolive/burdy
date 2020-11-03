@@ -8,9 +8,8 @@ export default {
         const path = 'http://localhost:5000/review_mine'
         axios.post(path, url, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
           .then((response) => { commit('setData', response.data) })
-          .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
+          .catch((error) => { utils.updateProgramStatus('error', error, commit) })
     },
-
     fetchJWT({ commit }, payload) {
         const path = 'http://localhost:5000/login'
         axios.post(path, payload)
@@ -25,7 +24,6 @@ export default {
             localStorage.removeItem('token')
           })
     },
-
     logout({ commit }) {
       return new Promise((resolve, reject) => {
         commit('logout')
@@ -34,27 +32,27 @@ export default {
         resolve()
       })
     },
-
     updateUserInfo({ commit }, payload) {
       const path = 'http://localhost:5000/update_info'
       axios.post(path, payload, { headers: { Authorization: `Bearer: ${store.state.currentJWT}` } })
         .then((response) => {
           const updatedToken = response.data
           localStorage.setItem('token', updatedToken)
-          utils.updateProgramStatus(error, commit, 'success')
+          utils.updateProgramStatus('success', response.data, commit)
           commit('updateJWT', updatedToken)
         })
-        .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
+        .catch((error) => { utils.updateProgramStatus('error', error, commit) })
     },
-
     moveOpinionUnit({ commit }, details) {
       commit('moveReviewMineData', details)
     },
-
     signUpUser({ commit }, payload) {
       const path = 'http://localhost:5000/sign_up'
       axios.post(path, payload)
-        .then((response) => { utils.updateProgramStatus(response.data, commit, 'success') })
-        .catch((error) => { utils.updateProgramStatus(error, commit, 'error') })
+        .then((response) => { utils.updateProgramStatus('success', response.data, commit) })
+        .catch((error) => { utils.updateProgramStatus('error', error, commit) })
+    },
+    formSubmisson({ commit }) {
+      commit('formSubmitted')
     }
 }

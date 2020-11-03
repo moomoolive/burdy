@@ -1,6 +1,5 @@
 <template>
   <div class="inputGeneral">
-    <h1> Update Profile </h1>
     <b-container class="signup form">
       <b-form v-on:submit="onSubmit" v-on:reset="onReset">
         <b-form-group
@@ -59,9 +58,41 @@
           </b-form-valid-feedback>
         </b-form-group>
 
-        <div v-if="!unchangedUserInfo">
-          <b-button type="submit" variant="success">Confirm Changes</b-button>
-        </div>
+        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
+          <b-form-input
+            id="input-3"
+            v-model="form.password"
+            v-bind:state="passwordValidation"
+            type="password"
+            required
+            placeholder="Please, please, don't make this 'password'. Please."
+          ></b-form-input>
+          <b-form-invalid-feedback v-bind:state="passwordValidation">
+            Your password must be 6-60 characters long.
+          </b-form-invalid-feedback>
+          <b-form-valid-feedback v-bind:state="passwordValidation">
+            You should be good to go.
+          </b-form-valid-feedback>
+        </b-form-group>
+
+        <b-form-group id="input-group-4" label="Confirm Password:" label-for="input-4">
+          <b-form-input
+            id="input-4"
+            v-model="form.confirmPassword"
+            v-bind:state="confirmPassword"
+            type="password"
+            required
+            placeholder="Don't mess up. No pressure!"
+          ></b-form-input>
+          <b-form-invalid-feedback v-bind:state="confirmPassword">
+            This is not equal to your password.
+          </b-form-invalid-feedback>
+          <b-form-valid-feedback v-bind:state="confirmPassword">
+            They are the same.
+          </b-form-valid-feedback>
+        </b-form-group>
+
+        <b-button type="submit" variant="primary">Submit</b-button>
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-container>
@@ -69,17 +100,17 @@
 </template>
 
 <script>
-import axios from 'axios'
-import store from '../../store/index.js'
-import utils from '../../utils/functions.js'
+import utils from '../../../utils/functions.js'
 
 export default {
-  name: 'updateUserForm',
+  name: 'signUpForm',
   data() {
     return {
       form: {
         username: '',
-        email: ''
+        email: '',
+        password: '',
+        confirmPassword: ''
       },
       uniqueUsername: true,
       uniqueEmail: true
@@ -87,63 +118,42 @@ export default {
   },
   methods: {
     initForm() {
-      this.form.username = this.userInfo.username
-      this.form.email = this.userInfo.email
+      this.form.username = ''
+      this.form.email = ''
+      this.form.password = ''
+      this.form.confirmPassword = ''
     },
-
     onSubmit(event) {
       event.preventDefault()
-
-      const payload = {
-        originalUsername: this.userInfo.username,
-        username: this.form.username,
-        email: this.form.email
-      }
-      this.$store.dispatch('updateUserInfo', payload)
+      const payload = this.form
+      this.$store.dispatch('formSubmisson')
+      this.$store.dispatch('signUpUser', payload)
       this.initForm()
     },
-
     onReset(event) {
       event.preventDefault()
-
       this.initForm()
     },
-
     checkUniqueness(...args) {
       return utils.checkUniqueness(...args)
     }
-
   },
   computed: {
     usernameValidation() {
-      const condition1 = this.form.username.length > 0
-      const condition2 = this.form.username.length < 21
-      const condition3 = this.uniqueUsername
-
-      return condition1 && condition2 && condition3
+      return utils.usernameRequirements(this.form.username) && this.uniqueUsername
     },
 
     emailValidation() {
-      const condition1 = this.form.email.length > 0
-      const condition2 = this.form.email.length < 121
-      const condition3 = this.uniqueEmail
-
-      return condition1 && condition2 && condition3
+      return utils.emailRequirements(this.form.email) && this.uniqueEmail
     },
 
-    userInfo() {
-      return this.$store.getters.userInfo
+    passwordValidation() {
+      return this.form.password.length > 5 && this.form.password.length < 60
     },
 
-    unchangedUserInfo() {
-      const condition1 = this.form.username === this.userInfo.username
-      const condition2 = this.form.email === this.userInfo.email
-
-      return condition1 && condition2
+    confirmPassword() {
+      return this.form.confirmPassword === this.form.password
     }
-  },
-  created() {
-    this.initForm()
   }
 }
 </script>
@@ -152,4 +162,5 @@ export default {
 .inputGeneral {
   margin-top: $headInputSpace;
 }
+
 </style>

@@ -41,21 +41,16 @@ import { mapActions } from 'vuex'
       }
     },
     methods: {
-      ...mapActions(['mineUrl']),
       initForm() {
         this.form.url = ''
       },
-
       onSubmit(event) {
         event.preventDefault()
-        this.$emit('url-submitted')
-
         const payload = { url: this.form.url }
-
-        this.mineUrl(payload)
+        this.$store.dispatch('formSubmisson')
+        this.$store.dispatch('mineUrl', payload)
         this.initForm()
       },
-
       onReset(event) {
         event.preventDefault()
         this.form.url = ''

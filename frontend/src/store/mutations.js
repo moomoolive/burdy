@@ -39,13 +39,17 @@ export default {
         }
     },
 
-    updateProgramStatus: (state, message, statusCode) => {
-        state.programStatus.status = statusCode
-        state.programStatus.errorMessage = message
+    updateProgramStatus: (state, data) => {
+        state.programStatus.status = data.status
+        state.programStatus.errorMessage = data.message
     },
 
     clearProgramStatus: (state) => {
         state.programStatus.status = ''
         state.programStatus.errorMessage = ''
+    },
+
+    formSubmitted: (state) => {
+        state.programStatus.status = 'form submitted'
     }
 }
