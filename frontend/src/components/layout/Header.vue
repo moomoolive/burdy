@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
-            <b-navbar-brand href="http://localhost:8080/">
+            <b-navbar-brand href="#" v-on:click="clickIcon">
                 <i class="fas fa-dove main"></i>
                 Burdy
             </b-navbar-brand>
@@ -66,6 +66,11 @@ export default {
         username() {
             return this.$store.getters.userInfo.username
             }
+    },
+    methods: {
+        clickIcon() {
+            this.$router.push('/')
+        }
     }
 }
 </script>
