@@ -3,7 +3,7 @@ version: '3.7'
 services:
     web:
         build: ./backend
-        command: gunicorn --bind 0.0.0.0:4999 run:app
+        command: gunicorn --bind 0.0.0.0:4999 app:app
         expose:
             - 4999
         env_file:
